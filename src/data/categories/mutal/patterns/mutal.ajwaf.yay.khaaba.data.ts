@@ -10,6 +10,7 @@ export const khaabaPattern: VerbSubCategory = {
   verb: 'خَابَ',
   meaning: 'to fail/disappoint',
   masdar: 'الخَيْبَةُ',
+  category: 'المُعْتَلُّ الأَجْوَفُ اليَائِيُّ',
   conjugations: [
     // Third person masculine
     {

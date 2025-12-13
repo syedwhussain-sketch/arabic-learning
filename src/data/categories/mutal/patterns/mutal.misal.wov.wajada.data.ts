@@ -10,6 +10,7 @@ export const wajadaPattern: VerbSubCategory = {
   verb: 'وَجَدَ',
   meaning: 'to find',
   masdar: 'الوُجْدَانُ',
+  category: 'المُعْتَلُّ المِثَال الوَاوِيُّ',
   conjugations: [
     // Third person masculine
     {

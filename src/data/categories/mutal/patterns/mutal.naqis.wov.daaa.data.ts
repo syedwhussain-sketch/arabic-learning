@@ -10,6 +10,7 @@ export const daaaPattern: VerbSubCategory = {
   verb: 'دَعَا',
   meaning: 'to call out',
   masdar: 'الدُّعَاءُ',
+  category: 'المُعْتَلُّ النَّاقِصُ الوَاوِيُّ',
   conjugations: [
     // Third person masculine
     {

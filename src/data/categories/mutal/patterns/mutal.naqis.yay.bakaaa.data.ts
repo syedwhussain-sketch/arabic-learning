@@ -10,6 +10,7 @@ export const bakaaaPattern: VerbSubCategory = {
   verb: 'بَكَى',
   meaning: 'to cry/weep',
   masdar: 'البُكَاءُ',
+  category: 'المُعْتَلُّ النَّاقِصُ اليَائِيُّ',
   conjugations: [
     // Third person masculine
     {

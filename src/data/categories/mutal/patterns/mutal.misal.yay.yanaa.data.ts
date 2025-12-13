@@ -10,6 +10,7 @@ export const yanaaPattern: VerbSubCategory = {
   verb: 'يَنَعَ',
   meaning: 'to become ripe',
   masdar: 'اليُنْعُ',
+  category: 'المُعْتَلُّ المِثَال اليَائِيُّ',
   conjugations: [
     // Third person masculine
     {
