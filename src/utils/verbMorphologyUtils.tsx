@@ -174,3 +174,47 @@ export function renderColorCodedAmr(
     </>
   );
 }
+
+/**
+ * Renders a lam (لَمْ) negation with color-coded morphology:
+ * - لَمْ particle in red (negationColor)
+ * - Verb prefix (ي، ت، أ، ن) in morphology color
+ * - Root letters with harakat in default color
+ * - Verb suffix (dual/plural markers) in morphology color
+ *
+ * @param verbText - The mudaria verb form after لَمْ (e.g., "يَنْصُرْ", "يَنْصُرَا")
+ * @param negationColor - Color for the لَمْ particle (typically red)
+ * @param morphologyColor - Color for verb prefix and suffix
+ * @returns React nodes with colored spans
+ */
+export function renderColorCodedLam(
+  verbText: string,
+  negationColor: string = '#ef4444',
+  morphologyColor: string = '#3b82f6'
+): React.ReactNode {
+  const prefix = getMudariaPrefix(verbText);
+  const suffix = getMudariaSuffix(verbText);
+
+  let prefixPart = '';
+  let rootPart = verbText;
+  let suffixPart = '';
+
+  if (prefix) {
+    prefixPart = prefix;
+    rootPart = verbText.slice(prefix.length);
+  }
+
+  if (suffix && rootPart.endsWith(suffix)) {
+    suffixPart = suffix;
+    rootPart = rootPart.slice(0, -suffix.length);
+  }
+
+  return (
+    <>
+      <span style={{ color: negationColor }}>لَمْ </span>
+      {prefixPart && <span style={{ color: morphologyColor }}>{prefixPart}</span>}
+      <span>{rootPart}</span>
+      {suffixPart && <span style={{ color: morphologyColor }}>{suffixPart}</span>}
+    </>
+  );
+}

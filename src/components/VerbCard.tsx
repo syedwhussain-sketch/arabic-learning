@@ -3,7 +3,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
 import type { VerbCategory, VerbSubCategory } from '../types/verb.types';
 import { renderStyledArabicText } from '../utils/arabicTextUtils';
-import { renderColorCodedMudaria, renderColorCodedMadi, renderColorCodedAmr } from '../utils/verbMorphologyUtils';
+import { renderColorCodedMudaria, renderColorCodedMadi, renderColorCodedAmr, renderColorCodedLam } from '../utils/verbMorphologyUtils';
 import { ARABIC_TEXT_DARK, ARABIC_TEXT_LIGHT } from '../constants/colors';
 // Theme-aware colors are derived from MUI theme palette; no hardcoded constants
 
@@ -20,6 +20,9 @@ export function VerbCard({ data }: VerbCardProps) {
 
   // Theme-aware color for morphology highlighting
   const morphologyColor = isDark ? ARABIC_TEXT_DARK : ARABIC_TEXT_LIGHT;
+
+  // Red color for negation particles (not theme-aware)
+  const negationColor = '#ef4444';
 
   // Neutral grayscale backgrounds for rows (theme-aware)
   // Slightly lighter for female rows to differentiate
@@ -72,7 +75,7 @@ export function VerbCard({ data }: VerbCardProps) {
                     <Typography variant="body1"><strong>الماضي:</strong> {renderColorCodedMadi(conj.past, morphologyColor)} {showTranslation && conj.pastEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.pastEnglish})</Typography>)}</Typography>
                     <Typography variant="body1"><strong>المضارع:</strong> {renderColorCodedMudaria(conj.present, morphologyColor)} {showTranslation && conj.presentEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.presentEnglish})</Typography>)}</Typography>
                     <Typography variant="body1"><strong>الأمر:</strong> {conj.imperative ? renderColorCodedAmr(conj.imperative, morphologyColor) : '-'} {showTranslation && conj.imperativeEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.imperativeEnglish})</Typography>)}</Typography>
-                    <Typography variant="body1"><strong>لَمْ:</strong> {conj.negationPast} {showTranslation && conj.negationPastEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.negationPastEnglish})</Typography>)}</Typography>
+                    <Typography variant="body1"><strong>لَمْ:</strong> {renderColorCodedLam(conj.negationPast, negationColor, morphologyColor)} {showTranslation && conj.negationPastEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.negationPastEnglish})</Typography>)}</Typography>
                     <Typography variant="body1"><strong>لَنْ:</strong> {conj.negationFuture} {showTranslation && conj.negationFutureEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.negationFutureEnglish})</Typography>)}</Typography>
                     <Typography variant="body1"><strong>لا:</strong> {conj.negationJussive} {showTranslation && conj.negationJussiveEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.negationJussiveEnglish})</Typography>)}</Typography>
                     <Typography variant="body1"><strong>اسم الفاعل:</strong> {conj.participle || '-' } {showTranslation && conj.participleEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.participleEnglish})</Typography>)}</Typography>
@@ -138,7 +141,7 @@ export function VerbCard({ data }: VerbCardProps) {
                         </TableCell>
                         <TableCell sx={{ fontSize: '1.1rem' }}>
                           <Box id={`cellNegationPast-${subCategory.id}-${index}`}>
-                            <div>لَمْ {conj.negationPast}</div>
+                            <div>{renderColorCodedLam(conj.negationPast, negationColor, morphologyColor)}</div>
                             {showTranslation && conj.negationPastEnglish && <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.75rem' }}>{conj.negationPastEnglish}</Typography>}
                           </Box>
                         </TableCell>
