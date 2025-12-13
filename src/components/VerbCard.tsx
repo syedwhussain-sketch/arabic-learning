@@ -10,7 +10,7 @@ interface VerbCardProps {
 }
 
 export function VerbCard({ data }: VerbCardProps) {
-  const [expandedMain, setExpandedMain] = useState<boolean>(true);
+  const [expandedMain, setExpandedMain] = useState<boolean>(false);
   const [expandedSubCategory, setExpandedSubCategory] = useState<string | false>(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));

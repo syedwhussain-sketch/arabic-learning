@@ -11,10 +11,8 @@ export function LandingPage() {
         display: 'flex',
         alignItems: 'center',
         py: 6,
-        background: (theme) =>
-          theme.palette.mode === 'dark'
-            ? 'radial-gradient(1200px 500px at 20% 0%, #18244a 0%, transparent 55%), radial-gradient(1200px 500px at 80% 0%, #2a1746 0%, transparent 55%), #0b0f19'
-            : 'radial-gradient(1200px 500px at 20% 0%, #e3f2fd 0%, transparent 55%), radial-gradient(1200px 500px at 80% 0%, #f3e5f5 0%, transparent 55%), #ffffff',
+        backgroundColor: (theme) =>
+          theme.palette.mode === 'dark' ? '#000000' : '#ffffff',
       }}
     >
       <Container maxWidth="lg">
@@ -25,13 +23,8 @@ export function LandingPage() {
             sx={{
               fontWeight: 'bold',
               mb: 2,
-              background: (theme) =>
-                theme.palette.mode === 'dark'
-                  ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                  : 'linear-gradient(135deg, #3f51b5 0%, #5a67d8 100%)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
+              color: (theme) =>
+                theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
             }}
           >
             Arabic Learning Hub
@@ -71,7 +64,7 @@ export function LandingPage() {
             >
               <CardActionArea
                 component={Link}
-                to="/verbs/tree"
+                to="/verbs/table"
                 sx={{ height: '100%', p: 3 }}
               >
                 <CardContent>
@@ -86,7 +79,8 @@ export function LandingPage() {
                     <MenuBookIcon
                       sx={{
                         fontSize: 64,
-                        color: 'primary.main',
+                        color: (theme) =>
+                          theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
                       }}
                     />
                   </Box>
@@ -145,7 +139,8 @@ export function LandingPage() {
                     <MoreHorizIcon
                       sx={{
                         fontSize: 64,
-                        color: 'secondary.main',
+                        color: (theme) =>
+                          theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
                       }}
                     />
                   </Box>
