@@ -3,7 +3,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
 import type { VerbCategory, VerbSubCategory } from '../types/verb.types';
 import { renderStyledArabicText } from '../utils/arabicTextUtils';
-import { renderColorCodedMudaria } from '../utils/verbMorphologyUtils';
+import { renderColorCodedMudaria, renderColorCodedMadi } from '../utils/verbMorphologyUtils';
 // Theme-aware colors are derived from MUI theme palette; no hardcoded constants
 
 interface VerbCardProps {
@@ -65,7 +65,7 @@ export function VerbCard({ data }: VerbCardProps) {
                   </Box>
                   <Divider sx={{ my: 1 }} />
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
-                    <Typography variant="body1"><strong>الماضي:</strong> {conj.past} {showTranslation && conj.pastEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.pastEnglish})</Typography>)}</Typography>
+                    <Typography variant="body1"><strong>الماضي:</strong> {renderColorCodedMadi(conj.past)} {showTranslation && conj.pastEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.pastEnglish})</Typography>)}</Typography>
                     <Typography variant="body1"><strong>المضارع:</strong> {renderColorCodedMudaria(conj.present)} {showTranslation && conj.presentEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.presentEnglish})</Typography>)}</Typography>
                     <Typography variant="body1"><strong>الأمر:</strong> {conj.imperative || '-'} {showTranslation && conj.imperativeEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.imperativeEnglish})</Typography>)}</Typography>
                     <Typography variant="body1"><strong>لَمْ:</strong> {conj.negationPast} {showTranslation && conj.negationPastEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.negationPastEnglish})</Typography>)}</Typography>
@@ -116,7 +116,7 @@ export function VerbCard({ data }: VerbCardProps) {
                         </TableCell>
                         <TableCell sx={{ fontSize: '1.1rem' }}>
                           <Box id={`cellPast-${subCategory.id}-${index}`}>
-                            <div>{conj.past}</div>
+                            <div>{renderColorCodedMadi(conj.past)}</div>
                             {showTranslation && conj.pastEnglish && <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.75rem' }}>{conj.pastEnglish}</Typography>}
                           </Box>
                         </TableCell>

@@ -65,3 +65,60 @@ export function renderColorCodedMudaria(
     </>
   );
 }
+
+// Past tense (madi) suffixes for pronouns
+const MADI_SUFFIXES = [
+  'تُمَا',  // you two (antumaa)
+  'تُنَّ',  // you (f.pl)
+  'تُمْ',   // you (m.pl)
+  'وا',    // they (m)
+  'تَا',   // she two / they two (f)
+  'نَا',   // we
+  'تْ',    // she
+  'تَ',    // you (m)
+  'تِ',    // you (f)
+  'تُ',    // I
+  'نَ',    // they (f)
+  'ا'      // they two (m) - check this last to avoid partial matches
+];
+
+function getMadiSuffix(text: string): string | null {
+  // Check longest suffixes first to avoid partial matches
+  for (const suffix of MADI_SUFFIXES) {
+    if (text.endsWith(suffix)) {
+      return suffix;
+    }
+  }
+  return null;
+}
+
+/**
+ * Renders a madi (past tense) verb form with color-coded morphology:
+ * - Root letters with harakat in default color
+ * - Suffix (pronoun endings) in specified color
+ *
+ * @param text - The madi verb form (e.g., "نَصَرَ", "نَصَرَا", "نَصَرْتُمَا")
+ * @param suffixColor - Color for suffix (default: #3b82f6)
+ * @returns React nodes with colored spans
+ */
+export function renderColorCodedMadi(
+  text: string,
+  suffixColor: string = '#3b82f6'
+): React.ReactNode {
+  const suffix = getMadiSuffix(text);
+
+  let rootPart = text;
+  let suffixPart = '';
+
+  if (suffix) {
+    suffixPart = suffix;
+    rootPart = text.slice(0, -suffix.length);
+  }
+
+  return (
+    <>
+      <span>{rootPart}</span>
+      {suffixPart && <span style={{ color: suffixColor }}>{suffixPart}</span>}
+    </>
+  );
+}
