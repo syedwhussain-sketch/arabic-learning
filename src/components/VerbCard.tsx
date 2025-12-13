@@ -3,7 +3,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
 import type { VerbCategory, VerbSubCategory } from '../types/verb.types';
 import { renderStyledArabicText } from '../utils/arabicTextUtils';
-import { ARABIC_TEXT_DARK, ARABIC_TEXT_LIGHT } from '../constants/colors';
 // Theme-aware colors are derived from MUI theme palette; no hardcoded constants
 
 interface VerbCardProps {
@@ -246,7 +245,7 @@ export function VerbCard({ data }: VerbCardProps) {
           {/* Explanation Card */}
           <Box id={`containerExplanation-${data.id}`} sx={{ p: 3, bgcolor: 'background.paper', color: 'text.primary', textAlign: 'left' }}>
             <Typography variant="body1" sx={{ lineHeight: 1.8, whiteSpace: 'pre-line' }}>
-              {renderStyledArabicText(data.explanation, '1.30em', isDark ? ARABIC_TEXT_DARK : ARABIC_TEXT_LIGHT)}
+              {renderStyledArabicText(data.explanation, '1.30em', isDark ? 'dark' : 'light')}
             </Typography>
           </Box>
 
@@ -291,7 +290,7 @@ export function VerbCard({ data }: VerbCardProps) {
                     >
                       <Box id={`containerSubCategoryTitle-${subCategory.id}`} sx={{ width: '100%', textAlign: 'center' }}>
                         <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'inherit' }}>
-                          {subCategory.arabic} {subCategory.masdar}
+                          {renderStyledArabicText(`${subCategory.arabic} ${subCategory.masdar}`)}
                         </Typography>
                         <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }}>
                           {subCategory.meaning}

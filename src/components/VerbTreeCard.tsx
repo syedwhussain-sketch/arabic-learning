@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import type { VerbCategory, VerbSubCategory, VerbConjugation } from '../types/verb.types';
 import { renderStyledArabicText } from '../utils/arabicTextUtils';
-import { ARABIC_TEXT_DARK, ARABIC_TEXT_LIGHT } from '../constants/colors';
 import './VerbTreeCard.css';
 
 interface VerbTreeCardProps {
@@ -120,7 +119,7 @@ export function VerbTreeCard({ data, isDark = true }: VerbTreeCardProps) {
           <summary onClick={(e) => { e.preventDefault(); togglePattern(pattern.id); }}>
             <span className="toggle"></span>
             <span className="title" style={{ direction: 'rtl' }}>
-              {pattern.arabic} - {pattern.masdar}
+              {renderStyledArabicText(`${pattern.arabic} - ${pattern.masdar}`)}
             </span>
             <span className="meta">{conjugationCount} conjugations</span>
           </summary>
@@ -172,7 +171,7 @@ export function VerbTreeCard({ data, isDark = true }: VerbTreeCardProps) {
             </summary>
             <div className="content">
               <div style={{ marginBottom: '16px', lineHeight: '1.6', textAlign: 'left' }}>
-                {renderStyledArabicText(data.explanation, '1.30em', isDark ? ARABIC_TEXT_DARK : ARABIC_TEXT_LIGHT)}
+                {renderStyledArabicText(data.explanation, '1.30em', isDark ? 'dark' : 'light')}
               </div>
 
               <div className="children">
