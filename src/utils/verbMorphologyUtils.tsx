@@ -122,3 +122,55 @@ export function renderColorCodedMadi(
     </>
   );
 }
+
+// Imperative (amr) suffixes for pronouns
+const AMR_SUFFIXES = [
+  'وا',    // you (m.pl) - انصروا
+  'انِ',   // you two - انصرا (with tanween)
+  'ان',    // you two - انصرا
+  'نَ',    // you (f.pl) - انصرن
+  'ي',     // you (f.s) - انصري
+  'ا'      // you two (dual) - انصرا (just alif)
+];
+
+function getAmrSuffix(text: string): string | null {
+  // Check longest suffixes first to avoid partial matches
+  for (const suffix of AMR_SUFFIXES) {
+    if (text.endsWith(suffix)) {
+      return suffix;
+    }
+  }
+  return null;
+}
+
+/**
+ * Renders an amr (imperative) verb form with color-coded morphology:
+ * - Root letters with harakat in default color
+ * - Suffix (pronoun endings) in specified color
+ * - Note: Prefix is not colored as it's not morphologically significant
+ *
+ * @param text - The amr verb form (e.g., "اُنْصُرْ", "اُنْصُرَا", "اُنْصُرُوا")
+ * @param suffixColor - Color for suffix (default: #3b82f6)
+ * @returns React nodes with colored spans
+ */
+export function renderColorCodedAmr(
+  text: string,
+  suffixColor: string = '#3b82f6'
+): React.ReactNode {
+  const suffix = getAmrSuffix(text);
+
+  let rootPart = text;
+  let suffixPart = '';
+
+  if (suffix) {
+    suffixPart = suffix;
+    rootPart = text.slice(0, -suffix.length);
+  }
+
+  return (
+    <>
+      <span>{rootPart}</span>
+      {suffixPart && <span style={{ color: suffixColor }}>{suffixPart}</span>}
+    </>
+  );
+}

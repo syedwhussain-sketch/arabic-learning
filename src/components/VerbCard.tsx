@@ -3,7 +3,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
 import type { VerbCategory, VerbSubCategory } from '../types/verb.types';
 import { renderStyledArabicText } from '../utils/arabicTextUtils';
-import { renderColorCodedMudaria, renderColorCodedMadi } from '../utils/verbMorphologyUtils';
+import { renderColorCodedMudaria, renderColorCodedMadi, renderColorCodedAmr } from '../utils/verbMorphologyUtils';
+import { ARABIC_TEXT_DARK, ARABIC_TEXT_LIGHT } from '../constants/colors';
 // Theme-aware colors are derived from MUI theme palette; no hardcoded constants
 
 interface VerbCardProps {
@@ -17,10 +18,13 @@ export function VerbCard({ data }: VerbCardProps) {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isDark = theme.palette.mode === 'dark';
 
+  // Theme-aware color for morphology highlighting
+  const morphologyColor = isDark ? ARABIC_TEXT_DARK : ARABIC_TEXT_LIGHT;
+
   // Neutral grayscale backgrounds for rows (theme-aware)
   // Slightly lighter for female rows to differentiate
   const getRowBg = (female?: boolean) => {
-    if (isDark) 
+    if (isDark)
       return female ? 'rgba(255,255,255,0.11)' : 'rgba(255,255,255,0.04)';
 
     return female ? 'rgba(0,0,0,0.09)' : 'rgba(0,0,0,0.04)';
@@ -65,9 +69,9 @@ export function VerbCard({ data }: VerbCardProps) {
                   </Box>
                   <Divider sx={{ my: 1 }} />
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
-                    <Typography variant="body1"><strong>الماضي:</strong> {renderColorCodedMadi(conj.past)} {showTranslation && conj.pastEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.pastEnglish})</Typography>)}</Typography>
-                    <Typography variant="body1"><strong>المضارع:</strong> {renderColorCodedMudaria(conj.present)} {showTranslation && conj.presentEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.presentEnglish})</Typography>)}</Typography>
-                    <Typography variant="body1"><strong>الأمر:</strong> {conj.imperative || '-'} {showTranslation && conj.imperativeEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.imperativeEnglish})</Typography>)}</Typography>
+                    <Typography variant="body1"><strong>الماضي:</strong> {renderColorCodedMadi(conj.past, morphologyColor)} {showTranslation && conj.pastEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.pastEnglish})</Typography>)}</Typography>
+                    <Typography variant="body1"><strong>المضارع:</strong> {renderColorCodedMudaria(conj.present, morphologyColor)} {showTranslation && conj.presentEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.presentEnglish})</Typography>)}</Typography>
+                    <Typography variant="body1"><strong>الأمر:</strong> {conj.imperative ? renderColorCodedAmr(conj.imperative, morphologyColor) : '-'} {showTranslation && conj.imperativeEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.imperativeEnglish})</Typography>)}</Typography>
                     <Typography variant="body1"><strong>لَمْ:</strong> {conj.negationPast} {showTranslation && conj.negationPastEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.negationPastEnglish})</Typography>)}</Typography>
                     <Typography variant="body1"><strong>لَنْ:</strong> {conj.negationFuture} {showTranslation && conj.negationFutureEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.negationFutureEnglish})</Typography>)}</Typography>
                     <Typography variant="body1"><strong>لا:</strong> {conj.negationJussive} {showTranslation && conj.negationJussiveEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.negationJussiveEnglish})</Typography>)}</Typography>
@@ -116,19 +120,19 @@ export function VerbCard({ data }: VerbCardProps) {
                         </TableCell>
                         <TableCell sx={{ fontSize: '1.1rem' }}>
                           <Box id={`cellPast-${subCategory.id}-${index}`}>
-                            <div>{renderColorCodedMadi(conj.past)}</div>
+                            <div>{renderColorCodedMadi(conj.past, morphologyColor)}</div>
                             {showTranslation && conj.pastEnglish && <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.75rem' }}>{conj.pastEnglish}</Typography>}
                           </Box>
                         </TableCell>
                         <TableCell sx={{ fontSize: '1.1rem' }}>
                           <Box id={`cellPresent-${subCategory.id}-${index}`}>
-                            <div>{renderColorCodedMudaria(conj.present)}</div>
+                            <div>{renderColorCodedMudaria(conj.present, morphologyColor)}</div>
                             {showTranslation && conj.presentEnglish && <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.75rem' }}>{conj.presentEnglish}</Typography>}
                           </Box>
                         </TableCell>
                         <TableCell sx={{ fontSize: '1.1rem' }}>
                           <Box id={`cellImperative-${subCategory.id}-${index}`}>
-                            <div>{conj.imperative || '-'}</div>
+                            <div>{conj.imperative ? renderColorCodedAmr(conj.imperative, morphologyColor) : '-'}</div>
                             {showTranslation && conj.imperativeEnglish && <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.75rem' }}>{conj.imperativeEnglish}</Typography>}
                           </Box>
                         </TableCell>
