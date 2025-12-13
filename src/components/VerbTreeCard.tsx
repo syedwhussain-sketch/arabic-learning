@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { VerbCategory, VerbSubCategory, VerbConjugation } from '../types/verb.types';
+import { renderStyledArabicText } from '../utils/arabicTextUtils';
 import './VerbTreeCard.css';
 
 interface VerbTreeCardProps {
@@ -170,7 +171,7 @@ export function VerbTreeCard({ data, isDark = true }: VerbTreeCardProps) {
             </summary>
             <div className="content">
               <div style={{ marginBottom: '16px', lineHeight: '1.6', textAlign: 'left' }}>
-                {data.explanation}
+                {renderStyledArabicText(data.explanation)}
               </div>
 
               <div className="children">
