@@ -292,6 +292,11 @@ export function VerbCard({ data }: VerbCardProps) {
                         <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'inherit' }}>
                           {renderStyledArabicText(`${subCategory.arabic} ${subCategory.masdar}`)}
                         </Typography>
+                        {subCategory.category && (
+                          <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.75rem', display: 'block', mt: 0.5 }}>
+                            ({renderStyledArabicText(subCategory.category)})
+                          </Typography>
+                        )}
                         <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }}>
                           {subCategory.meaning}
                         </Typography>

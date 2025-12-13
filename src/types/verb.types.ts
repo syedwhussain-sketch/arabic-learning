@@ -31,6 +31,7 @@ export interface VerbSubCategory {
   verb: string;
   meaning: string;
   masdar: string;
+  category?: string; // Category hierarchy (e.g., "المُعْتَلُّ الأَجْوَفُ الوَاوِيُّ")
   conjugations: VerbConjugation[];
   exampleSentences: {
     lam_male: string;

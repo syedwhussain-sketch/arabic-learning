@@ -10,6 +10,7 @@ export const taabaPattern: VerbSubCategory = {
   verb: 'تَابَ',
   meaning: 'to repent',
   masdar: 'التَّوْبَةُ',
+  category: 'المُعْتَلُّ الأَجْوَفُ الوَاوِيُّ',
   conjugations: [
     // Third person masculine
     {
