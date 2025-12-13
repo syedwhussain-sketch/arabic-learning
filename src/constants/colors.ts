@@ -16,3 +16,7 @@ export const SURFACE_HEADER_HOVER = '#1a1a1a';
 export const TEXT_ON_HEADER = '#ffffff';
 export const EXAMPLE_MASDAR_BG = '#4a148c';
 export const EXAMPLE_MASDAR_TEXT = '#ffffff';
+
+// Arabic text colors (theme-aware)
+export const ARABIC_TEXT_DARK = '#4fc3f7';  // Light cyan/blue for dark mode
+export const ARABIC_TEXT_LIGHT = '#c62828'; // Deep red for light mode
