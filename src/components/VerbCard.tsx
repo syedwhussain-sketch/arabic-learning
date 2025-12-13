@@ -55,7 +55,7 @@ export function VerbCard({ data }: VerbCardProps) {
             {subCategory.conjugations.map((conj, index) => {
               const showTranslation = true; // Show translation for all rows
               return (
-                <Paper key={index} elevation={0} sx={{ p: 2, borderRadius: 2, bgcolor: getRowBg(isFeminine(conj)) }}>
+                <Paper key={index} elevation={0} sx={{ p: 2, borderRadius: 3, bgcolor: getRowBg(isFeminine(conj)) }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', mb: 1 }}>
                     <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>{conj.pronounArabic}</Typography>
                     {showTranslation && conj.pronoun && (
@@ -78,7 +78,7 @@ export function VerbCard({ data }: VerbCardProps) {
           </Box>
         ) : (
           /* Desktop/Tablet: keep table */
-          <TableContainer id={`tableContainerConjugation-${subCategory.id}`} component={Paper} variant="outlined" sx={{ direction: 'rtl', mb: 3, borderRadius: 2, boxShadow: 1, bgcolor: 'background.paper' }}>
+          <TableContainer id={`tableContainerConjugation-${subCategory.id}`} component={Paper} variant="outlined" sx={{ direction: 'rtl', mb: 3, borderRadius: 3, boxShadow: 1, bgcolor: 'background.paper' }}>
               <Table size="small">
                 <TableHead>
                   <TableRow sx={{ bgcolor: 'background.paper' }}>
@@ -165,30 +165,30 @@ export function VerbCard({ data }: VerbCardProps) {
 
         {/* Example Sentences */}
         {subCategory.exampleSentences.lam_male && (
-          <Card id={`cardExampleSentences-${subCategory.id}`} sx={{ borderRadius: 2, boxShadow: 1 }}>
+          <Card id={`cardExampleSentences-${subCategory.id}`} sx={{ borderRadius: 3, boxShadow: 1 }}>
             <CardContent>
               <Box id={`containerExampleSentencesInner-${subCategory.id}`} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <Box id={`exampleSentenceLamMale-${subCategory.id}`} sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+                <Box id={`exampleSentenceLamMale-${subCategory.id}`} sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 2 }}>
                   <Typography variant="body1" sx={{ fontSize: '1.1rem' }}>
                     {subCategory.exampleSentences.lam_male}
                   </Typography>
                 </Box>
-                <Box id={`exampleSentenceLamFemale-${subCategory.id}`} sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+                <Box id={`exampleSentenceLamFemale-${subCategory.id}`} sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 2 }}>
                   <Typography variant="body1" sx={{ fontSize: '1.1rem' }}>
                     {subCategory.exampleSentences.lam_female}
                   </Typography>
                 </Box>
-                <Box id={`exampleSentenceLanMale-${subCategory.id}`} sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+                <Box id={`exampleSentenceLanMale-${subCategory.id}`} sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 2 }}>
                   <Typography variant="body1" sx={{ fontSize: '1.1rem' }}>
                     {subCategory.exampleSentences.lan_male}
                   </Typography>
                 </Box>
-                <Box id={`exampleSentenceLanFemale-${subCategory.id}`} sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+                <Box id={`exampleSentenceLanFemale-${subCategory.id}`} sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 2 }}>
                   <Typography variant="body1" sx={{ fontSize: '1.1rem' }}>
                     {subCategory.exampleSentences.lan_female}
                   </Typography>
                 </Box>
-                <Box id={`exampleSentenceMasdar-${subCategory.id}`} sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+                <Box id={`exampleSentenceMasdar-${subCategory.id}`} sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 2 }}>
                   <Typography variant="body1" sx={{ fontSize: '1.1rem', color: 'text.primary' }}>
                     {subCategory.exampleSentences.masdar}
                   </Typography>
@@ -212,8 +212,8 @@ export function VerbCard({ data }: VerbCardProps) {
           mb: 0,
           '&:before': { display: 'none' },
           boxShadow: 3,
-          borderRadius: 2,
-          overflow: 'visible'
+          borderRadius: 3,
+          overflow: 'hidden'
         }}
       >
         <AccordionSummary
@@ -274,7 +274,8 @@ export function VerbCard({ data }: VerbCardProps) {
                     sx={{
                       boxShadow: 2,
                       '&:before': { display: 'none' },
-                      borderRadius: 1
+                      borderRadius: 3,
+                      overflow: 'hidden'
                     }}
                   >
                     <AccordionSummary

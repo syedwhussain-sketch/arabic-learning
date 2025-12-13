@@ -31,7 +31,7 @@ function makeTheme(mode: 'light' | 'dark') {
       secondary: { main: mode === 'light' ? '#000000' : '#ffffff' },
       background: {
         default: mode === 'light' ? '#ffffff' : '#000000',
-        paper: mode === 'light' ? '#ffffff' : '#000000',
+        paper: mode === 'light' ? '#ffffff' : '#1e1e1e',
       },
     },
     typography: {

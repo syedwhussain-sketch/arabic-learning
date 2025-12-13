@@ -55,6 +55,7 @@ export function LandingPage() {
             <Card
               sx={{
                 height: '100%',
+                borderRadius: 3,
                 transition: 'transform 0.2s, box-shadow 0.2s',
                 '&:hover': {
                   transform: 'translateY(-8px)',
@@ -115,6 +116,7 @@ export function LandingPage() {
             <Card
               sx={{
                 height: '100%',
+                borderRadius: 3,
                 transition: 'transform 0.2s, box-shadow 0.2s',
                 '&:hover': {
                   transform: 'translateY(-8px)',
