@@ -1,5 +1,5 @@
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Navigation } from './components/Navigation';
 import { LandingPage } from './pages/LandingPage';
 import { VerbsTreeView } from './pages/VerbsTreeView';
@@ -60,7 +60,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <BrowserRouter>
+      <HashRouter>
         <Navigation mode={mode} onToggleTheme={toggleTheme} />
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -69,7 +69,7 @@ function App() {
           <Route path="/other-topics" element={<OtherTopics />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </ThemeProvider>
   );
 }

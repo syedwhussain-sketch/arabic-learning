@@ -12,7 +12,9 @@
       "Bash(npx tsc:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run preview:*)"
     ]
   }
 }
