@@ -105,12 +105,12 @@ export function PracticeSetupDialogs() {
             mb: { xs: 2, sm: 2.5 },
           }}>
             <Chip
-              label="🔤 Arabic → English"
+              label="Arabic Words"
               onClick={() => setPracticeMode('arabic-to-english')}
               sx={{
-                px: 2,
-                py: 2.5,
-                fontSize: { xs: '0.9rem', sm: '1rem' },
+                px: { xs: 1, sm: 2 },
+                py: { xs: 1.5, sm: 2.5 },
+                fontSize: { xs: '0.75rem', sm: '1rem' },
                 fontWeight: 'bold',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
@@ -132,12 +132,12 @@ export function PracticeSetupDialogs() {
               }}
             />
             <Chip
-              label="📝 English → Arabic"
+              label="English Words"
               onClick={() => setPracticeMode('english-to-arabic')}
               sx={{
-                px: 2,
-                py: 2.5,
-                fontSize: { xs: '0.9rem', sm: '1rem' },
+                px: { xs: 1, sm: 2 },
+                py: { xs: 1.5, sm: 2.5 },
+                fontSize: { xs: '0.75rem', sm: '1rem' },
                 fontWeight: 'bold',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
