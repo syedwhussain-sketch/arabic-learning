@@ -56,6 +56,27 @@ export function Navigation({ mode, onToggleTheme }: NavigationProps) {
           >
             📚 Verb Categories
           </Button>
+          <Button
+            component={Link}
+            to="/vocabulary"
+            variant={location.pathname === '/vocabulary' ? 'contained' : 'text'}
+            size="small"
+            sx={{
+              color: location.pathname === '/vocabulary'
+                ? mode === 'dark' ? '#000000' : '#ffffff'
+                : 'inherit',
+              backgroundColor: location.pathname === '/vocabulary'
+                ? mode === 'dark' ? '#ffffff' : '#000000'
+                : 'transparent',
+              '&:hover': {
+                backgroundColor: location.pathname === '/vocabulary'
+                  ? mode === 'dark' ? '#e0e0e0' : '#333333'
+                  : mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)',
+              },
+            }}
+          >
+            🎴 Vocabulary
+          </Button>
         </Box>
 
         <Box sx={{ flexGrow: 1 }} />
