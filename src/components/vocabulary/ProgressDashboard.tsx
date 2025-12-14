@@ -58,20 +58,6 @@ export function ProgressDashboard() {
         borderRadius: 2,
       }}
     >
-      {vocabularySource && (
-        <Box sx={{ mb: 2, textAlign: 'center' }}>
-          <Chip
-            label={getSourceDisplay()}
-            sx={{
-              backgroundColor: isDark ? '#ffffff' : '#000000',
-              color: isDark ? '#000000' : '#ffffff',
-              fontWeight: 'bold',
-              fontSize: { xs: '0.85rem', sm: '0.95rem' },
-              px: 1.5,
-            }}
-          />
-        </Box>
-      )}
       <Box
         sx={{
           display: 'flex',
