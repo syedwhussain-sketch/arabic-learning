@@ -126,29 +126,18 @@ export function BuildingBlocksLanding() {
               sx={{
                 position: 'relative',
                 borderRadius: 2,
-                backgroundColor: isDark
-                  ? book.isAvailable
-                    ? '#1e1e1e'
-                    : '#0a0a0a'
-                  : book.isAvailable
-                  ? '#ffffff'
-                  : '#f5f5f5',
-                border: `2px solid ${
-                  isDark
-                    ? book.isAvailable
-                      ? 'rgba(255,255,255,0.15)'
-                      : 'rgba(255,255,255,0.05)'
-                    : book.isAvailable
-                    ? 'rgba(0,0,0,0.15)'
-                    : 'rgba(0,0,0,0.05)'
-                }`,
+                backgroundColor: book.isAvailable ? '#2a2a2a' : '#1a1a1a',
+                border: book.isAvailable 
+                  ? '2px solid rgba(255,255,255,0.18)' 
+                  : '2px solid rgba(255,255,255,0.08)',
                 opacity: book.isAvailable ? 1 : 0.6,
                 transition: 'all 0.3s ease',
                 '&:hover': book.isAvailable
                   ? {
                       transform: 'translateY(-8px)',
                       boxShadow: 8,
-                      borderColor: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
+                      backgroundColor: '#353535',
+                      borderColor: 'rgba(255,255,255,0.3)',
                     }
                   : {},
               }}
@@ -181,7 +170,7 @@ export function BuildingBlocksLanding() {
                         position: 'absolute',
                         top: 16,
                         right: 16,
-                        color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
+                        color: 'rgba(255,255,255,0.4)',
                       }}
                     >
                       <LockIcon fontSize="small" />
