@@ -57,10 +57,18 @@ export function LandingPage() {
               sx={{
                 height: '100%',
                 borderRadius: 3,
+                backgroundColor: (theme) =>
+                  theme.palette.mode === 'dark' 
+                    ? 'rgba(255, 255, 255, 0.05)' 
+                    : 'rgba(0, 0, 0, 0.02)',
                 transition: 'transform 0.2s, box-shadow 0.2s',
                 '&:hover': {
                   transform: 'translateY(-8px)',
                   boxShadow: 8,
+                  backgroundColor: (theme) =>
+                    theme.palette.mode === 'dark'
+                      ? 'rgba(255, 255, 255, 0.08)'
+                      : 'rgba(0, 0, 0, 0.04)',
                 },
               }}
             >
@@ -118,10 +126,18 @@ export function LandingPage() {
               sx={{
                 height: '100%',
                 borderRadius: 3,
+                backgroundColor: (theme) =>
+                  theme.palette.mode === 'dark' 
+                    ? 'rgba(255, 255, 255, 0.05)' 
+                    : 'rgba(0, 0, 0, 0.02)',
                 transition: 'transform 0.2s, box-shadow 0.2s',
                 '&:hover': {
                   transform: 'translateY(-8px)',
                   boxShadow: 8,
+                  backgroundColor: (theme) =>
+                    theme.palette.mode === 'dark'
+                      ? 'rgba(255, 255, 255, 0.08)'
+                      : 'rgba(0, 0, 0, 0.04)',
                 },
               }}
             >
