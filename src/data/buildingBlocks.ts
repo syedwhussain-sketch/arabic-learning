@@ -18,6 +18,7 @@ export interface BuildingBlock {
   short: string;
   examples?: Example[];
   details?: string;
+  emoji?: string;
 }
 
 export interface Floor {
@@ -57,6 +58,7 @@ export const blocks: BuildingBlock[] = [
     kind: "Term",
     short: "The noun that begins the nominal sentence.",
     details: "The **mubtadaʾ** is the first element of a nominal sentence, typically in the nominative case (marfūʿ). It is what the sentence is about.",
+    emoji: "🎬",
   },
   {
     id: "khabar",
@@ -65,6 +67,7 @@ export const blocks: BuildingBlock[] = [
     kind: "Term",
     short: "The second part of the nominal sentence (the information/news).",
     details: "The **khabar** is the predicate of a nominal sentence, providing information about the mubtadaʾ. It is also in the nominative case (marfūʿ).",
+    emoji: "📰",
   },
 
   // 1) إِنَّ
@@ -78,6 +81,7 @@ export const blocks: BuildingBlock[] = [
       { ar: "الكِتَابُ سَهْلٌ → إِنَّ الكِتَابَ سَهْلٌ", en: "The book is easy → Indeed, the book is easy." },
     ],
     details: "**إِنَّ** is one of the emphasizing particles that changes the grammatical case of the subject (mubtadaʾ) from nominative to accusative. It adds emphasis meaning 'indeed' or 'surely'.",
+    emoji: "‼️",
   },
   {
     id: "ismuInna",
@@ -108,6 +112,7 @@ export const blocks: BuildingBlock[] = [
       { ar: "المُدَرِّسُ مَرِيضٌ → لَعَلَّ المُدَرِّسَ مَرِيضٌ", en: "The teacher is sick → I'm afraid the teacher is sick." },
     ],
     details: "**لَعَلَّ** is one of the 'sisters of inna' (أخوات إِنَّ) and has the same grammatical effect. It expresses hope (in positive contexts) or fear/apprehension (in negative contexts).",
+    emoji: "🤞",
   },
 
   // 3) ذُو
@@ -123,6 +128,7 @@ export const blocks: BuildingBlock[] = [
       { ar: "ذُو عِلْمٍ", en: "possessing knowledge (learned)" },
     ],
     details: "**ذُو** means 'possessor of' or 'having' and is always used in a possessive construction (iḍāfah). The word following it must be in the genitive case (majrūr).",
+    emoji: "👑",
   },
   {
     id: "dhat",
@@ -181,6 +187,7 @@ export const blocks: BuildingBlock[] = [
       { ar: "أَرَأَيْتَ بِلَالًا أَمْ حَامِدًا؟", en: "Did you see Bilāl or Ḥāmid?" },
     ],
     details: "**أَمْ** is used to express 'or' specifically in questions. It cannot be used in statements.",
+    emoji: "❓",
   },
   {
     id: "aw",
@@ -205,6 +212,7 @@ export const blocks: BuildingBlock[] = [
     short: "'Hundred'. The alif in مِائَة is not pronounced (pronounced مِئَة).",
     examples: [{ ar: "مِائَةُ كِتَابٍ", en: "one hundred books" }],
     details: "**مِائَة** means 'hundred'. Note that the alif (ا) is written but silent. After مِائَة, the counted noun is singular and in the genitive case.",
+    emoji: "💯",
   },
   {
     id: "alf",
@@ -236,6 +244,7 @@ export const blocks: BuildingBlock[] = [
     short: "Means 'expensive'. In the lesson: actual form is غَالِيٌّ, but the yāʾ (and its ḍammah) is omitted and tanwīn shifts (ghāli-yu-n → ghāli-n).",
     examples: [{ ar: "هَذَا الكِتَابُ غَالٍ", en: "This book is expensive." }],
     details: "**غَالٍ** is an example of a defective noun (اسم منقوص) where the final yāʾ is dropped. The original form is غَالِيٌّ but it appears as غَالٍ in the nominative case.",
+    emoji: "💰",
   },
 ];
 

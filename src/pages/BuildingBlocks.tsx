@@ -190,6 +190,19 @@ export function BuildingBlocks() {
                         gap: 1.5,
                       }}
                     >
+                      {block.emoji && (
+                        <Box
+                          sx={{
+                            fontSize: '4rem',
+                            position: 'absolute',
+                            top: 16,
+                            left: 16,
+                            opacity: 0.7,
+                          }}
+                        >
+                          {block.emoji}
+                        </Box>
+                      )}
                       <Box
                         sx={{
                           fontSize: '2.5rem',
