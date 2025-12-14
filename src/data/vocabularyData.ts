@@ -13,7 +13,7 @@ export interface VocabularyItem {
   difficulty: number;
 }
 
-export const vocabularyItems: VocabularyItem[] = [
+const allVocabularyItems: VocabularyItem[] = [
   // Lesson 1
   { id: "doctor", arabic: "طَبِيبٌ", english: "doctor", transliteration: "ṭabībun", category: "People", difficulty: 1 },
   { id: "boy", arabic: "وَلَدٌ", english: "boy", transliteration: "waladun", category: "People", difficulty: 1 },
@@ -282,6 +282,15 @@ export const vocabularyItems: VocabularyItem[] = [
   { id: "full", arabic: "مَلْآنُ", english: "full", transliteration: "malʾānu", category: "Adjectives", difficulty: 1 },
   { id: "sharp", arabic: "حَادٌّ", english: "sharp", transliteration: "ḥāddun", category: "Adjectives", difficulty: 1 },
 ];
+
+// Filter out prepositions and proper nouns (Names, Countries, Cities)
+export const vocabularyItems = allVocabularyItems.filter(
+  (item) =>
+    item.category !== "Prepositions" &&
+    item.category !== "Names" &&
+    item.category !== "Countries" &&
+    item.category !== "Cities"
+);
 
 export function getVocabularyById(id: string): VocabularyItem | undefined {
   return vocabularyItems.find((item) => item.id === id);
