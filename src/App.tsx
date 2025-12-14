@@ -4,6 +4,7 @@ import { Navigation } from './components/Navigation';
 import { LandingPage } from './pages/LandingPage';
 import { VerbsTableView } from './pages/VerbsTableView';
 import { OtherTopics } from './pages/OtherTopics';
+import { BuildingBlocks } from './pages/BuildingBlocks';
 import { useMemo, useState, useEffect } from 'react';
 
 function useThemeMode() {
@@ -65,6 +66,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/verbs/table" element={<VerbsTableView />} />
           <Route path="/other-topics" element={<OtherTopics />} />
+          <Route path="/building-blocks" element={<BuildingBlocks />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </HashRouter>
