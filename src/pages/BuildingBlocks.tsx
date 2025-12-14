@@ -1,14 +1,39 @@
-import { useState } from 'react';
-import { Box, Container, Typography, Paper, useTheme, Chip } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { Box, Container, Typography, Paper, useTheme, Chip, IconButton } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { floors, getBlockById, type BuildingBlock } from '../data/buildingBlocks';
 import { BuildingBlockModal } from '../components/BuildingBlockModal';
-import { renderStyledArabicText } from '../utils/arabicTextUtils';
+
+const STORAGE_KEY = 'building-blocks-done';
 
 export function BuildingBlocks() {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
   const [selectedBlock, setSelectedBlock] = useState<BuildingBlock | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [doneBlocks, setDoneBlocks] = useState<Set<string>>(new Set());
+
+  // Load done blocks from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        setDoneBlocks(new Set(JSON.parse(saved)));
+      }
+    } catch (error) {
+      console.error('Failed to load done blocks:', error);
+    }
+  }, []);
+
+  // Save done blocks to localStorage whenever it changes
+  const saveDoneBlocks = (blocks: Set<string>) => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(blocks)));
+    } catch (error) {
+      console.error('Failed to save done blocks:', error);
+    }
+  };
 
   const handleBlockClick = (blockId: string) => {
     const block = getBlockById(blockId);
@@ -21,6 +46,20 @@ export function BuildingBlocks() {
   const handleCloseModal = () => {
     setModalOpen(false);
   };
+
+  const toggleDone = (blockId: string, event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent opening modal when clicking done button
+    const newDoneBlocks = new Set(doneBlocks);
+    if (newDoneBlocks.has(blockId)) {
+      newDoneBlocks.delete(blockId);
+    } else {
+      newDoneBlocks.add(blockId);
+    }
+    setDoneBlocks(newDoneBlocks);
+    saveDoneBlocks(newDoneBlocks);
+  };
+
+  const isDone = (blockId: string) => doneBlocks.has(blockId);
 
   // Color palette for different block types
   const getBlockColor = (kind: string) => {
@@ -113,6 +152,8 @@ export function BuildingBlocks() {
                       borderRadius: 2,
                       transition: 'all 0.3s ease',
                       border: `2px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+                      opacity: isDone(block.id) ? 0.5 : 1,
+                      position: 'relative',
                       '&:hover': {
                         transform: 'translateY(-8px) scale(1.02)',
                         boxShadow: 8,
@@ -120,6 +161,27 @@ export function BuildingBlocks() {
                       },
                     }}
                   >
+                    <IconButton
+                      onClick={(e) => toggleDone(block.id, e)}
+                      sx={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                        color: isDone(block.id) ? '#4caf50' : isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
+                        transition: 'all 0.2s ease',
+                        '&:hover': {
+                          color: '#4caf50',
+                          transform: 'scale(1.1)',
+                        },
+                      }}
+                      size="small"
+                    >
+                      {isDone(block.id) ? (
+                        <CheckCircleIcon fontSize="small" />
+                      ) : (
+                        <RadioButtonUncheckedIcon fontSize="small" />
+                      )}
+                    </IconButton>
                     <Box
                       sx={{
                         display: 'flex',
