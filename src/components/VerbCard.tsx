@@ -5,6 +5,8 @@ import type { VerbCategory, VerbSubCategory } from '../types/verb.types';
 import { renderStyledArabicText } from '../utils/arabicTextUtils';
 import { renderColorCodedMudaria, renderColorCodedMadi, renderColorCodedAmr, renderColorCodedLam } from '../utils/verbMorphologyUtils';
 import { ARABIC_TEXT_DARK, ARABIC_TEXT_LIGHT } from '../constants/colors';
+import { MarkdownModal } from './MarkdownModal';
+import majzoomVerbInfo from '../info/majzoom-verb-info.md?raw';
 // Theme-aware colors are derived from MUI theme palette; no hardcoded constants
 
 interface VerbCardProps {
@@ -14,6 +16,7 @@ interface VerbCardProps {
 export function VerbCard({ data }: VerbCardProps) {
   const [expandedMain, setExpandedMain] = useState<boolean>(false);
   const [expandedSubCategory, setExpandedSubCategory] = useState<string | false>(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isDark = theme.palette.mode === 'dark';
@@ -75,9 +78,23 @@ export function VerbCard({ data }: VerbCardProps) {
                     <Typography variant="body1"><strong>الماضي:</strong> {renderColorCodedMadi(conj.past, morphologyColor)} {showTranslation && conj.pastEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.pastEnglish})</Typography>)}</Typography>
                     <Typography variant="body1"><strong>المضارع:</strong> {renderColorCodedMudaria(conj.present, morphologyColor)} {showTranslation && conj.presentEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.presentEnglish})</Typography>)}</Typography>
                     <Typography variant="body1"><strong>الأمر:</strong> {conj.imperative ? renderColorCodedAmr(conj.imperative, morphologyColor) : '-'} {showTranslation && conj.imperativeEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.imperativeEnglish})</Typography>)}</Typography>
-                    <Typography variant="body1"><strong>لَمْ:</strong> {renderColorCodedLam(conj.negationPast, negationColor, morphologyColor)} {showTranslation && conj.negationPastEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.negationPastEnglish})</Typography>)}</Typography>
+                    <Typography variant="body1">
+                      <strong
+                        onClick={() => setModalOpen(true)}
+                        style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                      >
+                        لَمْ:
+                      </strong> {renderColorCodedLam(conj.negationPast, negationColor, morphologyColor)} {showTranslation && conj.negationPastEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.negationPastEnglish})</Typography>)}
+                    </Typography>
                     <Typography variant="body1"><strong>لَنْ:</strong> {conj.negationFuture} {showTranslation && conj.negationFutureEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.negationFutureEnglish})</Typography>)}</Typography>
-                    <Typography variant="body1"><strong>لا:</strong> {conj.negationJussive} {showTranslation && conj.negationJussiveEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.negationJussiveEnglish})</Typography>)}</Typography>
+                    <Typography variant="body1">
+                      <strong
+                        onClick={() => setModalOpen(true)}
+                        style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                      >
+                        لا:
+                      </strong> {conj.negationJussive} {showTranslation && conj.negationJussiveEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.negationJussiveEnglish})</Typography>)}
+                    </Typography>
                     <Typography variant="body1"><strong>اسم الفاعل:</strong> {conj.participle || '-' } {showTranslation && conj.participleEnglish && (<Typography component="span" variant="caption" sx={{ color: 'text.secondary' }}>({conj.participleEnglish})</Typography>)}</Typography>
                   </Box>
                 </Paper>
@@ -94,9 +111,29 @@ export function VerbCard({ data }: VerbCardProps) {
                     <TableCell sx={{ fontWeight: 'bold' }}>الماضي</TableCell>
                     <TableCell sx={{ fontWeight: 'bold' }}>المضارع</TableCell>
                     <TableCell sx={{ fontWeight: 'bold' }}>الأمر</TableCell>
-                    <TableCell sx={{ fontWeight: 'bold' }}>لَمْ</TableCell>
+                    <TableCell
+                      sx={{
+                        fontWeight: 'bold',
+                        cursor: 'pointer',
+                        textDecoration: 'underline',
+                        '&:hover': { bgcolor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)' }
+                      }}
+                      onClick={() => setModalOpen(true)}
+                    >
+                      لَمْ
+                    </TableCell>
                     <TableCell sx={{ fontWeight: 'bold' }}>لَنْ</TableCell>
-                    <TableCell sx={{ fontWeight: 'bold' }}>لا</TableCell>
+                    <TableCell
+                      sx={{
+                        fontWeight: 'bold',
+                        cursor: 'pointer',
+                        textDecoration: 'underline',
+                        '&:hover': { bgcolor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)' }
+                      }}
+                      onClick={() => setModalOpen(true)}
+                    >
+                      لا
+                    </TableCell>
                     <TableCell sx={{ fontWeight: 'bold' }}>اسم الفاعل</TableCell>
                   </TableRow>
                 </TableHead>
@@ -321,6 +358,14 @@ export function VerbCard({ data }: VerbCardProps) {
           </Box>
         </AccordionDetails>
       </Accordion>
+
+      {/* Markdown Modal for Majzoom Verb Info */}
+      <MarkdownModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title="Majzoom Verb Information"
+        content={majzoomVerbInfo}
+      />
     </Box>
   );
 }
