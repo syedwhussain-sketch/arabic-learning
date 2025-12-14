@@ -2,6 +2,7 @@ import { Box, Container, Typography, Card, CardContent, CardActionArea, Grid } f
 import { Link } from 'react-router-dom';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { APP_VERSION } from '../constants/constants';
 
 export function LandingPage() {
   return (
@@ -173,6 +174,25 @@ export function LandingPage() {
             </Card>
           </Grid>
         </Grid>
+
+        <Box
+          sx={{
+            textAlign: 'center',
+            mt: 8,
+            pt: 4,
+            borderTop: '1px solid',
+            borderColor: 'divider',
+          }}
+        >
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
+            Version {APP_VERSION}
+          </Typography>
+        </Box>
       </Container>
     </Box>
   );

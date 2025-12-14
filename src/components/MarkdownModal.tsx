@@ -129,7 +129,7 @@ export function MarkdownModal({ open, onClose, title, content }: MarkdownModalPr
         {processText(children)}
       </Box>
     ),
-    code: ({ inline, children }) => (
+    code: ({ inline, children }: any) => (
       <Box
         component={inline ? 'code' : 'pre'}
         sx={{
