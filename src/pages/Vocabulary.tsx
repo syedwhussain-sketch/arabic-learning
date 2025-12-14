@@ -215,23 +215,23 @@ export function Vocabulary() {
           <Paper
             elevation={3}
             sx={{
-              mb: 4,
-              p: 3,
+              mb: 2.5,
+              p: 2,
               backgroundColor: isDark ? '#1a1a1a' : '#f5f5f5',
-              borderRadius: 3,
+              borderRadius: 2,
             }}
           >
-            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, alignItems: 'center' }}>
               {/* Pie Chart */}
-              <Box sx={{ width: { xs: '100%', md: '33%' }, height: 250 }}>
+              <Box sx={{ width: { xs: '100%', md: '33%' }, height: 150 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={pieData}
                       cx="50%"
                       cy="50%"
-                      innerRadius={60}
-                      outerRadius={90}
+                      innerRadius={36}
+                      outerRadius={54}
                       paddingAngle={2}
                       dataKey="value"
                     >
@@ -250,63 +250,64 @@ export function Vocabulary() {
                 </ResponsiveContainer>
               </Box>
 
-              {/* Statistics */}
-              <Box sx={{ flex: 1, width: '100%' }}>
-                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)' }, gap: 2 }}>
+              {/* Statistics - Compact Layout */}
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, flex: 1 }}>
+                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 1 }}>
                   <Card sx={{ backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }}>
-                    <CardContent sx={{ textAlign: 'center' }}>
-                      <Typography variant="h4" sx={{ color: '#4caf50', fontWeight: 'bold' }}>
+                    <CardContent sx={{ textAlign: 'center', p: 1, '&:last-child': { pb: 1 } }}>
+                      <Typography variant="h6" sx={{ color: '#4caf50', fontWeight: 'bold', fontSize: '1.1rem' }}>
                         {correctCount}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
                         Correct
                       </Typography>
                     </CardContent>
                   </Card>
                   <Card sx={{ backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }}>
-                    <CardContent sx={{ textAlign: 'center' }}>
-                      <Typography variant="h4" sx={{ color: '#f44336', fontWeight: 'bold' }}>
+                    <CardContent sx={{ textAlign: 'center', p: 1, '&:last-child': { pb: 1 } }}>
+                      <Typography variant="h6" sx={{ color: '#f44336', fontWeight: 'bold', fontSize: '1.1rem' }}>
                         {wrongCount}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
                         Wrong
                       </Typography>
                     </CardContent>
                   </Card>
                   <Card sx={{ backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }}>
-                    <CardContent sx={{ textAlign: 'center' }}>
-                      <Typography variant="h4" sx={{ color: isDark ? '#90caf9' : '#1976d2', fontWeight: 'bold' }}>
+                    <CardContent sx={{ textAlign: 'center', p: 1, '&:last-child': { pb: 1 } }}>
+                      <Typography variant="h6" sx={{ color: isDark ? '#90caf9' : '#1976d2', fontWeight: 'bold', fontSize: '1.1rem' }}>
                         {remaining}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
                         Remaining
                       </Typography>
                     </CardContent>
                   </Card>
                   <Card sx={{ backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }}>
-                    <CardContent sx={{ textAlign: 'center' }}>
-                      <Typography variant="h4" sx={{ color: isDark ? '#ffa726' : '#f57c00', fontWeight: 'bold' }}>
+                    <CardContent sx={{ textAlign: 'center', p: 1, '&:last-child': { pb: 1 } }}>
+                      <Typography variant="h6" sx={{ color: isDark ? '#ffa726' : '#f57c00', fontWeight: 'bold', fontSize: '1.1rem' }}>
                         {percentageCorrect}%
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
                         Accuracy
                       </Typography>
                     </CardContent>
                   </Card>
                 </Box>
-
-                <Box sx={{ mt: 3, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 2 }}>
-                  <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-                    {practiceMode === 'arabic-to-english' ? 'Arabic → English' : 'English → Arabic'}
-                  </Typography>
-                  <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 'bold' }}>
-                    Progress: {correctCount} / {totalCards} completed
-                  </Typography>
-                  <Button onClick={handleExitPractice} variant="outlined" size="small">
-                    Exit Practice
-                  </Button>
-                </Box>
               </Box>
+            </Box>
+
+            {/* Bottom Info Bar */}
+            <Box sx={{ mt: 2, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 1 }}>
+              <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.85rem' }}>
+                {practiceMode === 'arabic-to-english' ? 'Arabic → English' : 'English → Arabic'}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 'bold', fontSize: '0.85rem' }}>
+                Progress: {correctCount} / {totalCards} completed
+              </Typography>
+              <Button onClick={handleExitPractice} variant="outlined" size="small">
+                Exit Practice
+              </Button>
             </Box>
           </Paper>
 
