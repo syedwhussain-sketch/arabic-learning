@@ -12,13 +12,18 @@ import {
   DialogActions,
   Modal,
   Backdrop,
+  TextField,
+  Card,
+  CardContent,
 } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { vocabularyItems, type VocabularyItem } from '../data/vocabularyData';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
 type PracticeMode = 'arabic-to-english' | 'english-to-arabic' | null;
+type PracticeSize = 'random50' | 'custom' | 'all' | null;
 
 interface CardState {
   item: VocabularyItem;
@@ -30,13 +35,20 @@ export function Vocabulary() {
   const isDark = theme.palette.mode === 'dark';
   const [gridRef] = useAutoAnimate();
 
+  // Practice setup state
+  const [practiceSize, setPracticeSize] = useState<PracticeSize>(null);
+  const [customCount, setCustomCount] = useState<string>('100');
+  const [sizeDialogOpen, setSizeDialogOpen] = useState(false);
+
   // Practice state
   const [practiceMode, setPracticeMode] = useState<PracticeMode>(null);
   const [modeDialogOpen, setModeDialogOpen] = useState(false);
   const [isPracticing, setIsPracticing] = useState(false);
   const [cards, setCards] = useState<CardState[]>([]);
   const [correctCount, setCorrectCount] = useState(0);
+  const [wrongCount, setWrongCount] = useState(0);
   const [focusedCardIndex, setFocusedCardIndex] = useState<number | null>(null);
+  const [totalCards, setTotalCards] = useState(0);
 
   // Fisher-Yates shuffle algorithm
   const shuffleArray = <T,>(array: T[]): T[] => {
@@ -48,20 +60,45 @@ export function Vocabulary() {
     return shuffled;
   };
 
+  // Get practice cards based on size selection
+  const getPracticeCards = (size: PracticeSize, count?: number): VocabularyItem[] => {
+    const shuffled = shuffleArray(vocabularyItems);
+
+    switch (size) {
+      case 'random50':
+        return shuffled.slice(0, Math.min(50, vocabularyItems.length));
+      case 'custom':
+        const customNum = count || parseInt(customCount) || 100;
+        return shuffled.slice(0, Math.min(customNum, vocabularyItems.length));
+      case 'all':
+        return shuffled;
+      default:
+        return [];
+    }
+  };
+
   // Initialize cards when practice mode is selected
   useEffect(() => {
-    if (practiceMode && isPracticing) {
-      // Shuffle the cards
-      const shuffled = shuffleArray(vocabularyItems).map((item) => ({
+    if (practiceMode && isPracticing && practiceSize) {
+      const practiceCards = getPracticeCards(practiceSize);
+      const shuffled = practiceCards.map((item) => ({
         item,
         isFlipped: false,
       }));
       setCards(shuffled);
+      setTotalCards(shuffled.length);
       setCorrectCount(0);
+      setWrongCount(0);
     }
-  }, [practiceMode, isPracticing]);
+  }, [practiceMode, isPracticing, practiceSize]);
 
   const handleStartPractice = () => {
+    setSizeDialogOpen(true);
+  };
+
+  const handleSizeSelect = (size: PracticeSize) => {
+    setPracticeSize(size);
+    setSizeDialogOpen(false);
     setModeDialogOpen(true);
   };
 
@@ -71,9 +108,15 @@ export function Vocabulary() {
     setIsPracticing(true);
   };
 
+  const handleCancelSizeSelection = () => {
+    setSizeDialogOpen(false);
+    setPracticeSize(null);
+  };
+
   const handleCancelModeSelection = () => {
     setModeDialogOpen(false);
     setPracticeMode(null);
+    setPracticeSize(null);
   };
 
   const handleCardClick = (index: number) => {
@@ -100,15 +143,16 @@ export function Vocabulary() {
         setCards(newCards);
         setCorrectCount(correctCount + 1);
       } else {
-        // Unflip the card
+        // Unflip the card and shuffle
         const newCards = cards.map((card, i) => ({
           ...card,
           isFlipped: i === focusedCardIndex ? false : card.isFlipped,
         }));
 
-        // Shuffle the cards - auto-animate will handle the animation
+        // Shuffle the cards
         const shuffled = shuffleArray(newCards);
         setCards(shuffled);
+        setWrongCount(wrongCount + 1);
       }
     }, 200);
   };
@@ -116,12 +160,14 @@ export function Vocabulary() {
   const handleExitPractice = () => {
     setIsPracticing(false);
     setPracticeMode(null);
+    setPracticeSize(null);
     setCards([]);
     setCorrectCount(0);
+    setWrongCount(0);
     setFocusedCardIndex(null);
+    setTotalCards(0);
   };
 
-  const totalCount = vocabularyItems.length;
   const focusedCard = focusedCardIndex !== null ? cards[focusedCardIndex] : null;
 
   // Color for vocabulary cards
@@ -131,6 +177,9 @@ export function Vocabulary() {
       'People': { light: '#E5F4FF', dark: '#1F2F4A' },
       'Verbs': { light: '#E5FFE5', dark: '#1F4A1F' },
       'Adjectives': { light: '#FFF4E5', dark: '#4A3A1F' },
+      'Animals': { light: '#F0E5FF', dark: '#2F1F4A' },
+      'Objects': { light: '#E5FFFF', dark: '#1F4A4A' },
+      'Food': { light: '#FFE5F0', dark: '#4A1F3A' },
     };
     const colorPair = colors[category as keyof typeof colors] || {
       light: '#F0E5FF',
@@ -139,67 +188,137 @@ export function Vocabulary() {
     return isDark ? colorPair.dark : colorPair.light;
   };
 
-  // If practicing, show practice view with card grid
+  // Calculate statistics
+  const totalAttempts = correctCount + wrongCount;
+  const percentageCorrect = totalAttempts > 0 ? Math.round((correctCount / totalAttempts) * 100) : 0;
+  const remaining = cards.length;
+
+  // Pie chart data
+  const pieData = [
+    { name: 'Correct', value: correctCount, color: '#4caf50' },
+    { name: 'Wrong', value: wrongCount, color: '#f44336' },
+    { name: 'Remaining', value: remaining, color: isDark ? '#424242' : '#e0e0e0' },
+  ];
+
+  // If practicing, show practice view with progress dashboard
   if (isPracticing) {
     return (
       <Box
         sx={{
           minHeight: 'calc(100vh - 64px)',
-          py: 6,
+          py: 4,
           backgroundColor: isDark ? '#000000' : '#ffffff',
         }}
       >
         <Container maxWidth="xl">
-          <Box sx={{ textAlign: 'center', mb: 4 }}>
-            <Typography
-              variant="h3"
-              component="h1"
-              sx={{
-                fontWeight: 'bold',
-                mb: 2,
-                color: 'text.primary',
-              }}
-            >
-              📚 Vocabulary Practice
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                color: 'text.secondary',
-                mb: 2,
-              }}
-            >
-              {practiceMode === 'arabic-to-english'
-                ? 'Arabic → English'
-                : 'English → Arabic'}
-            </Typography>
+          {/* Progress Dashboard */}
+          <Paper
+            elevation={3}
+            sx={{
+              mb: 4,
+              p: 3,
+              backgroundColor: isDark ? '#1a1a1a' : '#f5f5f5',
+              borderRadius: 3,
+            }}
+          >
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, alignItems: 'center' }}>
+              {/* Pie Chart */}
+              <Box sx={{ width: { xs: '100%', md: '33%' }, height: 250 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={pieData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={90}
+                      paddingAngle={2}
+                      dataKey="value"
+                    >
+                      {pieData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: isDark ? '#2a2a2a' : '#ffffff',
+                        border: `1px solid ${isDark ? '#444' : '#ddd'}`,
+                        borderRadius: 8,
+                      }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </Box>
 
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 2,
-                mb: 2,
-              }}
-            >
-              <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-                Progress: {correctCount} / {totalCount} correct
-              </Typography>
-              <Button onClick={handleExitPractice} variant="outlined" size="small">
-                Exit Practice
-              </Button>
+              {/* Statistics */}
+              <Box sx={{ flex: 1, width: '100%' }}>
+                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)' }, gap: 2 }}>
+                  <Card sx={{ backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }}>
+                    <CardContent sx={{ textAlign: 'center' }}>
+                      <Typography variant="h4" sx={{ color: '#4caf50', fontWeight: 'bold' }}>
+                        {correctCount}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Correct
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                  <Card sx={{ backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }}>
+                    <CardContent sx={{ textAlign: 'center' }}>
+                      <Typography variant="h4" sx={{ color: '#f44336', fontWeight: 'bold' }}>
+                        {wrongCount}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Wrong
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                  <Card sx={{ backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }}>
+                    <CardContent sx={{ textAlign: 'center' }}>
+                      <Typography variant="h4" sx={{ color: isDark ? '#90caf9' : '#1976d2', fontWeight: 'bold' }}>
+                        {remaining}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Remaining
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                  <Card sx={{ backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }}>
+                    <CardContent sx={{ textAlign: 'center' }}>
+                      <Typography variant="h4" sx={{ color: isDark ? '#ffa726' : '#f57c00', fontWeight: 'bold' }}>
+                        {percentageCorrect}%
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Accuracy
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Box>
+
+                <Box sx={{ mt: 3, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 2 }}>
+                  <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+                    {practiceMode === 'arabic-to-english' ? 'Arabic → English' : 'English → Arabic'}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 'bold' }}>
+                    Progress: {correctCount} / {totalCards} completed
+                  </Typography>
+                  <Button onClick={handleExitPractice} variant="outlined" size="small">
+                    Exit Practice
+                  </Button>
+                </Box>
+              </Box>
             </Box>
-          </Box>
+          </Paper>
 
+          {/* Practice Cards Grid */}
           {cards.length > 0 ? (
             <Box
               ref={gridRef}
               sx={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
                 gap: 3,
-                maxWidth: '1200px',
+                maxWidth: '1400px',
                 mx: 'auto',
               }}
             >
@@ -226,9 +345,7 @@ export function Vocabulary() {
                         backgroundColor: getVocabColor(item.category),
                         borderRadius: 4,
                         transition: 'all 0.3s ease',
-                        border: `2px solid ${
-                          isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
-                        }`,
+                        border: `2px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
                         minHeight: '200px',
                         display: 'flex',
                         flexDirection: 'column',
@@ -236,9 +353,7 @@ export function Vocabulary() {
                         '&:hover': {
                           transform: 'translateY(-8px) scale(1.02)',
                           boxShadow: 8,
-                          borderColor: isDark
-                            ? 'rgba(255,255,255,0.3)'
-                            : 'rgba(0,0,0,0.3)',
+                          borderColor: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
                         },
                       }}
                     >
@@ -256,17 +371,11 @@ export function Vocabulary() {
                             fontWeight: 'bold',
                             color: isDark ? '#ffffff' : '#000000',
                             textAlign: 'center',
-                            fontFamily:
-                              practiceMode === 'arabic-to-english'
-                                ? 'Amiri, Traditional Arabic, serif'
-                                : 'inherit',
-                            direction:
-                              practiceMode === 'arabic-to-english' ? 'rtl' : 'ltr',
+                            fontFamily: practiceMode === 'arabic-to-english' ? 'Amiri, Traditional Arabic, serif' : 'inherit',
+                            direction: practiceMode === 'arabic-to-english' ? 'rtl' : 'ltr',
                           }}
                         >
-                          {practiceMode === 'arabic-to-english'
-                            ? item.arabic
-                            : item.english}
+                          {practiceMode === 'arabic-to-english' ? item.arabic : item.english}
                         </Box>
                       </Box>
                     </Paper>
@@ -296,10 +405,19 @@ export function Vocabulary() {
                 variant="h6"
                 sx={{
                   color: 'text.secondary',
+                  mb: 2,
+                }}
+              >
+                You've completed all vocabulary cards!
+              </Typography>
+              <Typography
+                variant="h5"
+                sx={{
+                  color: 'text.primary',
                   mb: 4,
                 }}
               >
-                You've completed all vocabulary cards correctly!
+                Final Score: {correctCount} correct out of {totalCards} ({percentageCorrect}% accuracy)
               </Typography>
               <Button
                 variant="contained"
@@ -365,9 +483,7 @@ export function Vocabulary() {
                     height: '100%',
                     transformStyle: 'preserve-3d',
                     transition: 'transform 0.6s',
-                    transform: focusedCard.isFlipped
-                      ? 'rotateY(180deg)'
-                      : 'rotateY(0deg)',
+                    transform: focusedCard.isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
                   }}
                 >
                   {/* Front of Card */}
@@ -384,9 +500,7 @@ export function Vocabulary() {
                       backgroundColor: getVocabColor(focusedCard.item.category),
                       borderRadius: 4,
                       p: 4,
-                      border: `3px solid ${
-                        isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'
-                      }`,
+                      border: `3px solid ${isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'}`,
                     }}
                   >
                     <Box
@@ -395,18 +509,12 @@ export function Vocabulary() {
                         fontWeight: 'bold',
                         color: isDark ? '#ffffff' : '#000000',
                         textAlign: 'center',
-                        fontFamily:
-                          practiceMode === 'arabic-to-english'
-                            ? 'Amiri, Traditional Arabic, serif'
-                            : 'inherit',
-                        direction:
-                          practiceMode === 'arabic-to-english' ? 'rtl' : 'ltr',
+                        fontFamily: practiceMode === 'arabic-to-english' ? 'Amiri, Traditional Arabic, serif' : 'inherit',
+                        direction: practiceMode === 'arabic-to-english' ? 'rtl' : 'ltr',
                         mb: 2,
                       }}
                     >
-                      {practiceMode === 'arabic-to-english'
-                        ? focusedCard.item.arabic
-                        : focusedCard.item.english}
+                      {practiceMode === 'arabic-to-english' ? focusedCard.item.arabic : focusedCard.item.english}
                     </Box>
                   </Box>
 
@@ -425,9 +533,7 @@ export function Vocabulary() {
                       backgroundColor: getVocabColor(focusedCard.item.category),
                       borderRadius: 4,
                       p: 4,
-                      border: `3px solid ${
-                        isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'
-                      }`,
+                      border: `3px solid ${isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'}`,
                       gap: 3,
                     }}
                   >
@@ -448,17 +554,11 @@ export function Vocabulary() {
                         fontWeight: 'bold',
                         color: isDark ? '#ffffff' : '#000000',
                         textAlign: 'center',
-                        fontFamily:
-                          practiceMode === 'english-to-arabic'
-                            ? 'Amiri, Traditional Arabic, serif'
-                            : 'inherit',
-                        direction:
-                          practiceMode === 'english-to-arabic' ? 'rtl' : 'ltr',
+                        fontFamily: practiceMode === 'english-to-arabic' ? 'Amiri, Traditional Arabic, serif' : 'inherit',
+                        direction: practiceMode === 'english-to-arabic' ? 'rtl' : 'ltr',
                       }}
                     >
-                      {practiceMode === 'english-to-arabic'
-                        ? focusedCard.item.arabic
-                        : focusedCard.item.english}
+                      {practiceMode === 'english-to-arabic' ? focusedCard.item.arabic : focusedCard.item.english}
                     </Box>
 
                     {/* Answer Buttons - Only show when flipped */}
@@ -514,7 +614,7 @@ export function Vocabulary() {
     );
   }
 
-  // Landing page view
+  // Landing page view with practice size selection
   return (
     <Box
       sx={{
@@ -552,57 +652,153 @@ export function Vocabulary() {
               color: 'text.secondary',
               maxWidth: '700px',
               mx: 'auto',
-              mb: 6,
+              mb: 2,
               lineHeight: 1.6,
             }}
           >
-            Master essential Arabic vocabulary with interactive flip cards. Click
-            on each card to reveal the answer, then mark whether you got it right
-            or wrong!
+            Master essential Arabic vocabulary with interactive flip cards
           </Typography>
-
-          <Button
-            variant="contained"
-            size="large"
-            onClick={handleStartPractice}
+          <Typography
+            variant="body1"
             sx={{
-              py: 3,
-              px: 8,
-              fontSize: '1.5rem',
-              fontWeight: 'bold',
-              backgroundColor: isDark ? '#ffffff' : '#000000',
-              color: isDark ? '#000000' : '#ffffff',
-              borderRadius: 3,
-              textTransform: 'none',
-              '&:hover': {
-                backgroundColor: isDark ? '#e0e0e0' : '#333333',
-                transform: 'scale(1.05)',
-              },
-              transition: 'all 0.3s ease',
+              color: 'text.secondary',
+              maxWidth: '600px',
+              mx: 'auto',
+              mb: 6,
             }}
           >
-            Start Practice
-          </Button>
+            Available vocabulary: {vocabularyItems.length} words
+          </Typography>
+
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '100%', maxWidth: 500 }}>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={handleStartPractice}
+              sx={{
+                py: 3,
+                px: 6,
+                fontSize: '1.3rem',
+                fontWeight: 'bold',
+                backgroundColor: isDark ? '#ffffff' : '#000000',
+                color: isDark ? '#000000' : '#ffffff',
+                borderRadius: 3,
+                textTransform: 'none',
+                '&:hover': {
+                  backgroundColor: isDark ? '#e0e0e0' : '#333333',
+                  transform: 'scale(1.02)',
+                },
+                transition: 'all 0.3s ease',
+              }}
+            >
+              Start Practice
+            </Button>
+          </Box>
         </Box>
       </Container>
 
+      {/* Practice Size Selection Dialog */}
+      <Dialog open={sizeDialogOpen} onClose={handleCancelSizeSelection} maxWidth="sm" fullWidth>
+        <DialogTitle sx={{ textAlign: 'center', fontSize: '1.5rem', fontWeight: 'bold' }}>
+          Choose Practice Set
+        </DialogTitle>
+        <DialogContent>
+          <Typography variant="body1" sx={{ textAlign: 'center', mb: 3, color: 'text.secondary' }}>
+            How many words would you like to practice?
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ flexDirection: 'column', gap: 2, px: 3, pb: 3 }}>
+          <Button
+            variant="contained"
+            fullWidth
+            size="large"
+            onClick={() => handleSizeSelect('random50')}
+            sx={{
+              py: 2,
+              fontSize: '1.1rem',
+              backgroundColor: isDark ? '#ffffff' : '#000000',
+              color: isDark ? '#000000' : '#ffffff',
+              '&:hover': {
+                backgroundColor: isDark ? '#e0e0e0' : '#333333',
+              },
+            }}
+          >
+            Random 50 Words
+          </Button>
+          <Box sx={{ width: '100%', display: 'flex', gap: 2, alignItems: 'center' }}>
+            <TextField
+              type="number"
+              value={customCount}
+              onChange={(e) => setCustomCount(e.target.value)}
+              label="Number of words"
+              variant="outlined"
+              size="small"
+              sx={{ flex: 1 }}
+              inputProps={{ min: 1, max: vocabularyItems.length }}
+            />
+            <Button
+              variant="contained"
+              size="large"
+              onClick={() => handleSizeSelect('custom')}
+              sx={{
+                py: 1.5,
+                px: 3,
+                fontSize: '1.1rem',
+                backgroundColor: isDark ? '#ffffff' : '#000000',
+                color: isDark ? '#000000' : '#ffffff',
+                '&:hover': {
+                  backgroundColor: isDark ? '#e0e0e0' : '#333333',
+                },
+              }}
+            >
+              Practice
+            </Button>
+          </Box>
+          <Button
+            variant="contained"
+            fullWidth
+            size="large"
+            onClick={() => handleSizeSelect('all')}
+            sx={{
+              py: 2,
+              fontSize: '1.1rem',
+              backgroundColor: isDark ? '#ffffff' : '#000000',
+              color: isDark ? '#000000' : '#ffffff',
+              '&:hover': {
+                backgroundColor: isDark ? '#e0e0e0' : '#333333',
+              },
+            }}
+          >
+            Practice All Words ({vocabularyItems.length})
+          </Button>
+          <Button
+            variant="outlined"
+            fullWidth
+            size="large"
+            onClick={handleCancelSizeSelection}
+            sx={{
+              py: 2,
+              fontSize: '1.1rem',
+              borderColor: isDark ? '#ffffff' : '#000000',
+              color: isDark ? '#ffffff' : '#000000',
+              '&:hover': {
+                borderColor: isDark ? '#e0e0e0' : '#333333',
+                backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)',
+              },
+            }}
+          >
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       {/* Practice Mode Selection Dialog */}
-      <Dialog
-        open={modeDialogOpen}
-        onClose={handleCancelModeSelection}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle
-          sx={{ textAlign: 'center', fontSize: '1.5rem', fontWeight: 'bold' }}
-        >
+      <Dialog open={modeDialogOpen} onClose={handleCancelModeSelection} maxWidth="sm" fullWidth>
+        <DialogTitle sx={{ textAlign: 'center', fontSize: '1.5rem', fontWeight: 'bold' }}>
           Choose Practice Mode
         </DialogTitle>
         <DialogContent>
-          <Typography
-            variant="body1"
-            sx={{ textAlign: 'center', mb: 3, color: 'text.secondary' }}
-          >
+          <Typography variant="body1" sx={{ textAlign: 'center', mb: 3, color: 'text.secondary' }}>
             How would you like to practice?
           </Typography>
         </DialogContent>
@@ -653,9 +849,7 @@ export function Vocabulary() {
               color: isDark ? '#ffffff' : '#000000',
               '&:hover': {
                 borderColor: isDark ? '#e0e0e0' : '#333333',
-                backgroundColor: isDark
-                  ? 'rgba(255,255,255,0.08)'
-                  : 'rgba(0,0,0,0.04)',
+                backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)',
               },
             }}
           >
