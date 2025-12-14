@@ -12,6 +12,40 @@ export function VerbsTableView() {
       }}
     >
       <Container maxWidth="xl" sx={{ py: 4 }}>
+        {/* Page Header */}
+        <Box
+          id="boxVerbCategoriesHeader"
+          sx={{
+            textAlign: 'center',
+            mb: 4,
+          }}
+        >
+          <Typography
+            variant="h3"
+            component="h1"
+            gutterBottom
+            sx={{
+              fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
+              fontWeight: 700,
+              mb: 2,
+            }}
+          >
+            📚 Arabic Verb Categories
+          </Typography>
+          <Typography
+            variant="h6"
+            sx={{
+              fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' },
+              color: 'text.secondary',
+              maxWidth: '700px',
+              mx: 'auto',
+              px: 2,
+            }}
+          >
+            Explore the different categories of Arabic verbs and their conjugation patterns
+          </Typography>
+        </Box>
+
         {/* Al-Sahih Verb Card */}
         <Box sx={{ mt: 4 }}>
           <VerbCard data={alsahihData} />

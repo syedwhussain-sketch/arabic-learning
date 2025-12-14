@@ -2,7 +2,6 @@ import { AppBar, Toolbar, IconButton, Box, Button } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
-import HomeIcon from '@mui/icons-material/Home';
 
 interface NavigationProps {
   mode: 'light' | 'dark';
@@ -25,13 +24,12 @@ export function Navigation({ mode, onToggleTheme }: NavigationProps) {
         <Button
           component={Link}
           to="/"
-          startIcon={<HomeIcon />}
           sx={{
             mr: 2,
             color: 'inherit',
           }}
         >
-          Home
+          🏠 Home
         </Button>
 
         <Box sx={{ display: 'flex', gap: 1, mr: 'auto' }}>
@@ -58,24 +56,45 @@ export function Navigation({ mode, onToggleTheme }: NavigationProps) {
           </Button>
           <Button
             component={Link}
-            to="/vocabulary"
-            variant={location.pathname === '/vocabulary' ? 'contained' : 'text'}
+            to="/building-blocks"
+            variant={location.pathname === '/building-blocks' ? 'contained' : 'text'}
             size="small"
             sx={{
-              color: location.pathname === '/vocabulary'
+              color: location.pathname === '/building-blocks'
                 ? mode === 'dark' ? '#000000' : '#ffffff'
                 : 'inherit',
-              backgroundColor: location.pathname === '/vocabulary'
+              backgroundColor: location.pathname === '/building-blocks'
                 ? mode === 'dark' ? '#ffffff' : '#000000'
                 : 'transparent',
               '&:hover': {
-                backgroundColor: location.pathname === '/vocabulary'
+                backgroundColor: location.pathname === '/building-blocks'
                   ? mode === 'dark' ? '#e0e0e0' : '#333333'
                   : mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)',
               },
             }}
           >
-            🎴 Vocabulary
+            🧱 Building Blocks
+          </Button>
+          <Button
+            component={Link}
+            to="/practice"
+            variant={location.pathname.startsWith('/practice') ? 'contained' : 'text'}
+            size="small"
+            sx={{
+              color: location.pathname.startsWith('/practice')
+                ? mode === 'dark' ? '#000000' : '#ffffff'
+                : 'inherit',
+              backgroundColor: location.pathname.startsWith('/practice')
+                ? mode === 'dark' ? '#ffffff' : '#000000'
+                : 'transparent',
+              '&:hover': {
+                backgroundColor: location.pathname.startsWith('/practice')
+                  ? mode === 'dark' ? '#e0e0e0' : '#333333'
+                  : mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)',
+              },
+            }}
+          >
+            📝 Practice
           </Button>
         </Box>
 

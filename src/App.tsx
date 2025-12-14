@@ -5,6 +5,7 @@ import { LandingPage } from './pages/LandingPage';
 import { VerbsTableView } from './pages/VerbsTableView';
 import { OtherTopics } from './pages/OtherTopics';
 import { BuildingBlocks } from './pages/BuildingBlocks';
+import { Practice } from './pages/Practice';
 import { Vocabulary } from './pages/Vocabulary';
 import { useMemo, useState, useEffect } from 'react';
 
@@ -68,7 +69,8 @@ function App() {
           <Route path="/verbs/table" element={<VerbsTableView />} />
           <Route path="/other-topics" element={<OtherTopics />} />
           <Route path="/building-blocks" element={<BuildingBlocks />} />
-          <Route path="/vocabulary" element={<Vocabulary />} />
+          <Route path="/practice" element={<Practice />} />
+          <Route path="/practice/vocabulary" element={<Vocabulary />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </HashRouter>
