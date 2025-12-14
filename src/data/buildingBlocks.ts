@@ -25,50 +25,11 @@ export interface Floor {
   label: string;
   blockIds: string[];
   emoji?: string;
+  book: number;
+  lesson: number;
 }
 
 export const blocks: BuildingBlock[] = [
-  // CASES / MARKS (mentioned across the lesson)
-  {
-    id: "marfu",
-    title: "مَرْفُوع",
-    transliteration: "marfūʿ",
-    kind: "Case",
-    short: "Nominative case (used in the lesson e.g. غَالٍ is marfūʿ).",
-    details: "The **nominative case** (marfūʿ) is one of the three main grammatical cases in Arabic. It is marked by a ḍammah (ـُ) in singular nouns and is used for subjects of sentences.",
-  },
-  {
-    id: "mansub",
-    title: "مَنْصُوب",
-    transliteration: "manṣūb",
-    kind: "Case",
-    short: "Accusative case (noun after إِنَّ is manṣūb).",
-    details: "The **accusative case** (manṣūb) is marked by a fatḥah (ـَ) and is used for direct objects and after certain particles like إِنَّ.",
-  },
-  {
-    id: "majrur",
-    title: "مَجْرُور",
-    transliteration: "majrūr",
-    kind: "Case",
-    short: "Genitive case (after prepositions; muḍāf ilayhi; after numbers like مائة / ألف).",
-    details: "The **genitive case** (majrūr) is marked by a kasrah (ـِ) and is used after prepositions, in possessive constructions (iḍāfah), and after certain numbers.",
-  },
-  {
-    id: "dammah",
-    title: "ضَمَّة",
-    transliteration: "ḍammah",
-    kind: "Mark",
-    short: "The lesson notes: one/two ḍammahs change to one/two fatḥahs after إِنَّ.",
-    details: "The **ḍammah** (ـُ) is a diacritical mark indicating the 'u' vowel sound and marks the nominative case. When إِنَّ is used, the ḍammah on the subject changes to fatḥah.",
-  },
-  {
-    id: "fathah",
-    title: "فَتْحَة",
-    transliteration: "fatḥah",
-    kind: "Mark",
-    short: "The lesson notes: after إِنَّ the mubtada becomes manṣūb (fatḥah).",
-    details: "The **fatḥah** (ـَ) is a diacritical mark indicating the 'a' vowel sound and marks the accusative case. It replaces the ḍammah when إِنَّ is used.",
-  },
 
   // SENTENCE TYPES + PARTS
   {
@@ -284,18 +245,24 @@ export const floors: Floor[] = [
     label: "",
     emoji: "",
     blockIds: ["mubtada", "khabar", "inna"],
+    book: 2,
+    lesson: 1,
   },
   {
     id: "row2",
     label: "",
     emoji: "",
     blockIds: ["laalla", "am", "miʾaah"],
+    book: 2,
+    lesson: 1,
   },
   {
     id: "row3",
     label: "",
     emoji: "",
-    blockIds: ["ghalin"],
+    blockIds: ["ghalin", "dhu"],
+    book: 2,
+    lesson: 1,
   },
 ];
 

@@ -212,59 +212,36 @@ export function BuildingBlocks() {
                       >
                         {block.transliteration}
                       </Typography>
-                      <Chip
-                        label={block.kind}
-                        size="small"
-                        sx={{
-                          fontSize: '0.8rem',
-                          height: '24px',
-                          bgcolor: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
-                          color: isDark ? '#ffffff' : '#000000',
-                          fontWeight: 'bold',
-                        }}
-                      />
+                      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                        <Chip
+                          label={block.kind}
+                          size="small"
+                          sx={{
+                            fontSize: '0.8rem',
+                            height: '24px',
+                            bgcolor: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
+                            color: isDark ? '#ffffff' : '#000000',
+                            fontWeight: 'bold',
+                          }}
+                        />
+                        <Chip
+                          label={`B${floor.book}L${floor.lesson}`}
+                          size="small"
+                          sx={{
+                            fontSize: '0.8rem',
+                            height: '24px',
+                            bgcolor: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
+                            color: isDark ? '#ffffff' : '#000000',
+                            fontWeight: 'bold',
+                          }}
+                        />
+                      </Box>
                     </Box>
                   </Paper>
                 ))}
               </Box>
             );
           })}
-        </Box>
-
-        <Box
-          sx={{
-            mt: 6,
-            p: 3,
-            bgcolor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
-            borderRadius: 3,
-            maxWidth: '800px',
-            mx: 'auto',
-          }}
-        >
-          <Typography
-            variant="h6"
-            sx={{
-              color: 'text.primary',
-              fontWeight: 'bold',
-              mb: 2,
-              textAlign: 'center',
-            }}
-          >
-            📖 How to Use This Page
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              color: 'text.secondary',
-              textAlign: 'center',
-              lineHeight: 1.8,
-            }}
-          >
-            This building represents the structure of Arabic grammar concepts from Medina Book 2,
-            Lesson 1. The <strong>foundation</strong> blocks at the bottom represent the most basic
-            concepts (cases and marks), while higher levels build upon these foundations. Click any
-            block to see detailed explanations and examples! 🎓
-          </Typography>
         </Box>
       </Container>
 
