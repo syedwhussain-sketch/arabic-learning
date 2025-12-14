@@ -85,7 +85,7 @@ export function BuildingBlocks() {
       }}
     >
       <Container maxWidth="xl">
-        <Box sx={{ textAlign: 'center', mb: 6 }}>
+        <Box sx={{ textAlign: 'center', mb: { xs: 4, sm: 5, md: 6 } }}>
           <Typography
             variant="h3"
             component="h1"
@@ -93,6 +93,7 @@ export function BuildingBlocks() {
               fontWeight: 'bold',
               mb: 2,
               color: 'text.primary',
+              fontSize: { xs: '1.75rem', sm: '2.5rem', md: '3rem' },
             }}
           >
             🏗️ Arabic Building Blocks
@@ -102,6 +103,7 @@ export function BuildingBlocks() {
             sx={{
               color: 'text.secondary',
               mb: 2,
+              fontSize: { xs: '1rem', sm: '1.15rem', md: '1.25rem' },
             }}
           >
 
@@ -112,6 +114,8 @@ export function BuildingBlocks() {
               color: 'text.secondary',
               maxWidth: '700px',
               mx: 'auto',
+              fontSize: { xs: '0.875rem', sm: '0.95rem', md: '1rem' },
+              px: { xs: 2, sm: 0 },
             }}
           >
             Explore the foundational concepts of Arabic grammar. Each block represents a key
@@ -136,8 +140,8 @@ export function BuildingBlocks() {
                 key={floor.id}
                 sx={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(3, 1fr)',
-                  gap: 3,
+                  gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+                  gap: { xs: 2, sm: 2.5, md: 3 },
                 }}
               >
                 {blocks.map((block) => (
@@ -146,7 +150,7 @@ export function BuildingBlocks() {
                     elevation={3}
                     onClick={() => handleBlockClick(block.id)}
                     sx={{
-                      p: 3,
+                      p: { xs: 2, sm: 2.5, md: 3 },
                       cursor: 'pointer',
                       backgroundColor: getBlockColor(block.kind),
                       borderRadius: 2,
@@ -193,10 +197,10 @@ export function BuildingBlocks() {
                       {block.emoji && (
                         <Box
                           sx={{
-                            fontSize: '4rem',
+                            fontSize: { xs: '2rem', sm: '3rem', md: '4rem' },
                             position: 'absolute',
-                            top: 16,
-                            left: 16,
+                            top: { xs: 8, sm: 12, md: 16 },
+                            left: { xs: 8, sm: 12, md: 16 },
                             opacity: 0.7,
                           }}
                         >
@@ -205,7 +209,7 @@ export function BuildingBlocks() {
                       )}
                       <Box
                         sx={{
-                          fontSize: '2.5rem',
+                          fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
                           fontWeight: 'bold',
                           color: isDark ? '#ffffff' : '#000000',
                           textAlign: 'center',
@@ -220,7 +224,7 @@ export function BuildingBlocks() {
                         sx={{
                           color: isDark ? '#cccccc' : '#333333',
                           fontStyle: 'italic',
-                          fontSize: '1rem',
+                          fontSize: { xs: '0.875rem', sm: '0.95rem', md: '1rem' },
                         }}
                       >
                         {block.transliteration}
