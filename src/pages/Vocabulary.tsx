@@ -535,7 +535,7 @@ export function Vocabulary() {
                       borderRadius: 4,
                       p: 4,
                       border: `3px solid ${isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'}`,
-                      gap: 3,
+                      gap: 2,
                     }}
                   >
                     <Typography
@@ -549,17 +549,44 @@ export function Vocabulary() {
                     >
                       Answer
                     </Typography>
+
+                    {/* Arabic */}
                     <Box
                       sx={{
-                        fontSize: '3.5rem',
+                        fontSize: '3rem',
                         fontWeight: 'bold',
                         color: isDark ? '#ffffff' : '#000000',
                         textAlign: 'center',
-                        fontFamily: practiceMode === 'english-to-arabic' ? 'Amiri, Traditional Arabic, serif' : 'inherit',
-                        direction: practiceMode === 'english-to-arabic' ? 'rtl' : 'ltr',
+                        fontFamily: 'Amiri, Traditional Arabic, serif',
+                        direction: 'rtl',
                       }}
                     >
-                      {practiceMode === 'english-to-arabic' ? focusedCard.item.arabic : focusedCard.item.english}
+                      {focusedCard.item.arabic}
+                    </Box>
+
+                    {/* Transliteration */}
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        color: 'text.secondary',
+                        fontSize: '1.2rem',
+                        fontStyle: 'italic',
+                        textAlign: 'center',
+                      }}
+                    >
+                      {focusedCard.item.transliteration}
+                    </Typography>
+
+                    {/* English */}
+                    <Box
+                      sx={{
+                        fontSize: '2rem',
+                        fontWeight: 'bold',
+                        color: isDark ? '#ffffff' : '#000000',
+                        textAlign: 'center',
+                      }}
+                    >
+                      {focusedCard.item.english}
                     </Box>
 
                     {/* Answer Buttons - Only show when flipped */}
@@ -568,7 +595,7 @@ export function Vocabulary() {
                         sx={{
                           display: 'flex',
                           gap: 3,
-                          mt: 3,
+                          mt: 2,
                         }}
                       >
                         <Button
