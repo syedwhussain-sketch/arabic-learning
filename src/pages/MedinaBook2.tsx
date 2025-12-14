@@ -7,7 +7,7 @@ import { BuildingBlockModal } from '../components/BuildingBlockModal';
 
 const STORAGE_KEY = 'building-blocks-done';
 
-export function BuildingBlocks() {
+export function MedinaBook2() {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
   const [selectedBlock, setSelectedBlock] = useState<BuildingBlock | null>(null);
