@@ -7,7 +7,7 @@ import {
   CardContent,
   useTheme,
 } from '@mui/material';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Cell } from 'recharts';
 import type { PracticeMode } from '../../types/vocabulary.types';
 
 interface ProgressDashboardProps {
@@ -35,11 +35,10 @@ export function ProgressDashboard({
   const percentageCorrect =
     totalAttempts > 0 ? Math.round((correctCount / totalAttempts) * 100) : 0;
 
-  // Pie chart data
-  const pieData = [
+  // Bar chart data for correct/incorrect attempts
+  const barData = [
     { name: 'Correct', value: correctCount, color: '#4caf50' },
-    { name: 'Wrong', value: wrongCount, color: '#f44336' },
-    { name: 'Remaining', value: remaining, color: isDark ? '#424242' : '#e0e0e0' },
+    { name: 'Incorrect', value: wrongCount, color: '#f44336' },
   ];
 
   return (
@@ -60,23 +59,17 @@ export function ProgressDashboard({
           alignItems: 'center',
         }}
       >
-        {/* Pie Chart */}
+        {/* Bar Chart */}
         <Box sx={{ width: { xs: '100%', md: '33%' }, height: 150 }}>
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={pieData}
-                cx="50%"
-                cy="50%"
-                innerRadius={36}
-                outerRadius={54}
-                paddingAngle={2}
-                dataKey="value"
-              >
-                {pieData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
+            <BarChart data={barData} margin={{ top: 10, right: 10, left: -20, bottom: 20 }}>
+              <XAxis 
+                dataKey="name" 
+                tick={{ fill: isDark ? '#fff' : '#000', fontSize: 12 }}
+              />
+              <YAxis 
+                tick={{ fill: isDark ? '#fff' : '#000', fontSize: 12 }}
+              />
               <Tooltip
                 contentStyle={{
                   backgroundColor: isDark ? '#2a2a2a' : '#ffffff',
@@ -84,7 +77,12 @@ export function ProgressDashboard({
                   borderRadius: 8,
                 }}
               />
-            </PieChart>
+              <Bar dataKey="value" radius={[8, 8, 0, 0]}>
+                {barData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Bar>
+            </BarChart>
           </ResponsiveContainer>
         </Box>
 
