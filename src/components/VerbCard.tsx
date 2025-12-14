@@ -335,7 +335,10 @@ export function VerbCard({ data }: VerbCardProps) {
                       }}
                     >
                       <Box id={`containerSubCategoryTitle-${subCategory.id}`} sx={{ width: '100%', textAlign: 'center' }}>
-                        <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'inherit' }}>
+                        <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'inherit', direction: 'rtl' }}>
+                          {subCategory.meaning.match(/[\u{1F300}-\u{1F9FF}]/u)?.[0] && (
+                            <span style={{ fontSize: 'inherit' }}>{subCategory.meaning.match(/[\u{1F300}-\u{1F9FF}]/u)?.[0]} </span>
+                          )}
                           {renderStyledArabicText(`${subCategory.arabic} ${subCategory.masdar}`)}
                         </Typography>
                         {subCategory.category && (
@@ -344,7 +347,7 @@ export function VerbCard({ data }: VerbCardProps) {
                           </Typography>
                         )}
                         <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }}>
-                          {subCategory.meaning}
+                          {subCategory.meaning.replace(/[\u{1F300}-\u{1F9FF}]/u, '').trim()}
                         </Typography>
                       </Box>
                     </AccordionSummary>

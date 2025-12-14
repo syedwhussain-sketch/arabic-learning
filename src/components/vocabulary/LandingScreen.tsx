@@ -1,5 +1,5 @@
 import { Box, Container, Typography, Button, useTheme } from '@mui/material';
-import { vocabularyItems } from '../../data/vocabularyData';
+import { vocabularyItems } from '../../data/vocabulary';
 
 interface LandingScreenProps {
   onStartPractice: () => void;

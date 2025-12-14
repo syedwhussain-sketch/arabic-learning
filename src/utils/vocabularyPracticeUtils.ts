@@ -1,5 +1,5 @@
 import type { VocabularyItem } from '../data/vocabularyData';
-import { vocabularyItems } from '../data/vocabularyData';
+import { vocabularyItems } from '../data/vocabulary';
 import type { PracticeSize } from '../types/vocabulary.types';
 
 // Fisher-Yates shuffle algorithm

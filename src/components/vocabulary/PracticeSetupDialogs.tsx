@@ -12,7 +12,7 @@ import {
   CardContent,
 } from '@mui/material';
 import type { PracticeMode, PracticeSize } from '../../types/vocabulary.types';
-import { vocabularyItems } from '../../data/vocabularyData';
+import { vocabularyItems } from '../../data/vocabulary';
 
 interface PracticeSetupDialogsProps {
   sizeDialogOpen: boolean;
