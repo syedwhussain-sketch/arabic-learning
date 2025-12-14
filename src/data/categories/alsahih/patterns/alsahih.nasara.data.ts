@@ -8,7 +8,7 @@ export const nasaraPattern: VerbSubCategory = {
   transliteration: 'nasara yansuru',
   page: 'ص 1',
   verb: 'نَصَرَ',
-  meaning: 'to help/support',
+  meaning: '🤝 to help/support',
   masdar: 'النَّصْرُ',
   conjugations: [
     // Third person masculine

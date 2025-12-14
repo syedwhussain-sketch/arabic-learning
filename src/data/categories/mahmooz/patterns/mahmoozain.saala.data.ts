@@ -8,7 +8,7 @@ export const saalaPattern: VerbSubCategory = {
   transliteration: 'saala yasalu',
   page: 'ص 1',
   verb: 'سَأَلَ',
-  meaning: 'to ask',
+  meaning: '❓ to ask',
   masdar: 'السُّؤَالُ',
   conjugations: [
     // Third person masculine

@@ -8,7 +8,7 @@ export const wajadaPattern: VerbSubCategory = {
   transliteration: 'wajada yajidu',
   page: 'ص 1',
   verb: 'وَجَدَ',
-  meaning: 'to find',
+  meaning: '🔍 to find',
   masdar: 'الوُجْدَانُ',
   category: 'المُعْتَلُّ المِثَال الوَاوِيُّ',
   conjugations: [

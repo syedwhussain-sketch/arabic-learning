@@ -3,8 +3,8 @@ import type { VerbCategory } from '../../../types/verb.types';
 
 export const amutalMetadata: Omit<VerbCategory, 'subCategories'> = {
   id: 'mutal',
-  arabic: 'المُعْتَلُّ',
-  english: 'The Weak Verb',
+  arabic: '🌊 المُعْتَلُّ',
+  english: '🌊 The Weak Verb',
   transliteration: "Al-Mu'tall",
   explanation: `المُعْتَلُّ (weak verb): is a verb that contains a weak letter in its original letters.
 It has three types:

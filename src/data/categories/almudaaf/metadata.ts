@@ -3,8 +3,8 @@ import type { VerbCategory } from '../../../types/verb.types';
 
 export const almudaafMetadata: Omit<VerbCategory, 'subCategories'> = {
   id: 'mudaaf',
-  arabic: 'المُضَاعَفُ',
-  english: 'The Double Lettered Verb',
+  arabic: '👯 المُضَاعَفُ',
+  english: '👯 The Double Lettered Verb',
   transliteration: 'Al-Muḍā\'af',
   explanation: 'المُضَاعَفُ (double lettered verb): is a word having, as its root letters, two '+
   'letters of the same type. Example: سَبَّ\n\n'+

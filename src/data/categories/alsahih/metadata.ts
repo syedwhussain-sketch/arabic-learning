@@ -3,8 +3,8 @@ import type { VerbCategory } from '../../../types/verb.types';
 
 export const alsahihMetadata: Omit<VerbCategory, 'subCategories'> = {
   id: 'sahih',
-  arabic: 'الصَّحِيحُ',
-  english: 'The Sound/Strong Verb',
+  arabic: '💪 الصَّحِيحُ',
+  english: '💪 The Sound/Strong Verb',
   transliteration: 'As-Sahīh',
   explanation: 'الصَّحِيحُ (strong verb): is that word whose root letters do not '+
   'have a hamzah, any weak letters (و، ي) or two letters of the same type. '+

@@ -8,7 +8,7 @@ export const fatahaPattern: VerbSubCategory = {
   transliteration: 'fataha yaftahu',
   page: 'ص 4',
   verb: 'فَتَحَ',
-  meaning: 'to open',
+  meaning: '🔓 to open',
   masdar: 'الفَتْحُ',
   conjugations: [
     // Third person masculine

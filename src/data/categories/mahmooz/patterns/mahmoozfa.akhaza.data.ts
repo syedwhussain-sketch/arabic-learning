@@ -8,7 +8,7 @@ export const akhazaPattern: VerbSubCategory = {
   transliteration: 'akhaza yakhudhu',
   page: 'ص 1',
   verb: 'أَخَذَ',
-  meaning: 'to take',
+  meaning: '✋ to take',
   masdar: 'الأَخْذُ',
   conjugations: [
     // Third person masculine

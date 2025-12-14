@@ -8,7 +8,7 @@ export const khaabaPattern: VerbSubCategory = {
   transliteration: 'khāba yakhību',
   page: 'ص 1',
   verb: 'خَابَ',
-  meaning: 'to fail/disappoint',
+  meaning: '😞 to fail/disappoint',
   masdar: 'الخَيْبَةُ',
   category: 'المُعْتَلُّ الأَجْوَفُ اليَائِيُّ',
   conjugations: [

@@ -8,7 +8,7 @@ export const hasibaPattern: VerbSubCategory = {
   transliteration: 'hasiba yahsabu',
   page: 'ص 6',
   verb: 'حَسِبَ',
-  meaning: 'to think/consider',
+  meaning: '🤔 to think/consider',
   masdar: 'الحِسْبَانُ',
   conjugations: [
     // Third person masculine

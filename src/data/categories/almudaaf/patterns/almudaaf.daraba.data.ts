@@ -8,7 +8,7 @@ export const darabaPattern: VerbSubCategory = {
   transliteration: 'daraba yadrubu',
   page: 'ص 2',
   verb: 'ضَرَبَ',
-  meaning: 'coming soon',
+  meaning: '🔜 coming soon',
   masdar: 'الضَّرْبُ',
   conjugations: [],
   exampleSentences: {

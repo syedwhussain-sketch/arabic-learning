@@ -8,7 +8,7 @@ export const bakaaaPattern: VerbSubCategory = {
   transliteration: 'bakā yabkī',
   page: 'ص 1',
   verb: 'بَكَى',
-  meaning: 'to cry/weep',
+  meaning: '😢 to cry/weep',
   masdar: 'البُكَاءُ',
   category: 'المُعْتَلُّ النَّاقِصُ اليَائِيُّ',
   conjugations: [

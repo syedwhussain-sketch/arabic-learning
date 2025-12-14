@@ -8,7 +8,7 @@ export const sabbaPattern: VerbSubCategory = {
   transliteration: 'sabba yasubbu',
   page: 'ص 1',
   verb: 'سَبَّ',
-  meaning: 'to insult/curse',
+  meaning: '🤬 to insult/curse',
   masdar: 'السَّبُّ',
   conjugations: [
     // Third person masculine

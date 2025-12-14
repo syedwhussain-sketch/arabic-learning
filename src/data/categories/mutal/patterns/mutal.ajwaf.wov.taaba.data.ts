@@ -8,7 +8,7 @@ export const taabaPattern: VerbSubCategory = {
   transliteration: 'tāba yatūbu',
   page: 'ص 1',
   verb: 'تَابَ',
-  meaning: 'to repent',
+  meaning: '🙏 to repent',
   masdar: 'التَّوْبَةُ',
   category: 'المُعْتَلُّ الأَجْوَفُ الوَاوِيُّ',
   conjugations: [

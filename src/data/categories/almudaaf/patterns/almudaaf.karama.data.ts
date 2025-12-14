@@ -8,7 +8,7 @@ export const karamaPattern: VerbSubCategory = {
   transliteration: 'karama yakrumu',
   page: 'ص 3',
   verb: 'كَرُمَ',
-  meaning: 'coming soon',
+  meaning: '🔜 coming soon',
   masdar: 'الكَرَمُ',
   conjugations: [],
   exampleSentences: {

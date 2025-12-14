@@ -8,7 +8,7 @@ export const samiaPattern: VerbSubCategory = {
   transliteration: 'sami\'a yasma\'u',
   page: 'ص 3',
   verb: 'سَمِعَ',
-  meaning: 'to hear/listen',
+  meaning: '👂 to hear/listen',
   masdar: 'السَّمْعُ',
   conjugations: [
     // Third person masculine

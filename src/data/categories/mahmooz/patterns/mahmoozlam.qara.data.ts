@@ -8,7 +8,7 @@ export const qaraPattern: VerbSubCategory = {
   transliteration: 'qaraa yaqrau',
   page: 'ص 1',
   verb: 'قَرَأَ',
-  meaning: 'to read',
+  meaning: '📖 to read',
   masdar: 'القِرَاءَةُ',
   conjugations: [
     // Third person masculine

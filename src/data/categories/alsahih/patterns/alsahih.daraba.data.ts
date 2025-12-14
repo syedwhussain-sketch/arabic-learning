@@ -8,7 +8,7 @@ export const darabaPattern: VerbSubCategory = {
   transliteration: 'daraba yadribu',
   page: 'ص 2',
   verb: 'ضَرَبَ',
-  meaning: 'to hit/strike',
+  meaning: '👊 to hit/strike',
   masdar: 'الضَّرْبُ',
   conjugations: [
     // Third person masculine

@@ -8,7 +8,7 @@ export const karumaPattern: VerbSubCategory = {
   transliteration: 'karuma yakrumu',
   page: 'ص 5',
   verb: 'كَرُمَ',
-  meaning: 'to be generous/noble',
+  meaning: '👑 to be generous/noble',
   masdar: 'الكَرَمُ',
   conjugations: [
     // Third person masculine

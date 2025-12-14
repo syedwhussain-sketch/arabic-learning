@@ -8,7 +8,7 @@ export const yanaaPattern: VerbSubCategory = {
   transliteration: 'yana\'a yaynaʿu',
   page: 'ص 1',
   verb: 'يَنَعَ',
-  meaning: 'to become ripe',
+  meaning: '🍎 to become ripe',
   masdar: 'اليُنْعُ',
   category: 'المُعْتَلُّ المِثَال اليَائِيُّ',
   conjugations: [

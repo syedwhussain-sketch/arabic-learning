@@ -8,7 +8,7 @@ export const daaaPattern: VerbSubCategory = {
   transliteration: 'daʿā yadʿū',
   page: 'ص 1',
   verb: 'دَعَا',
-  meaning: 'to call out',
+  meaning: '📢 to call out',
   masdar: 'الدُّعَاءُ',
   category: 'المُعْتَلُّ النَّاقِصُ الوَاوِيُّ',
   conjugations: [

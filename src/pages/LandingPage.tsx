@@ -27,7 +27,7 @@ export function LandingPage() {
                 theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
             }}
           >
-            Arabic Learning Hub
+            📚 Arabic Learning Hub ✨
           </Typography>
           <Typography
             variant="h5"
@@ -36,7 +36,7 @@ export function LandingPage() {
               mb: 1,
             }}
           >
-            Master Arabic with Interactive Learning Tools
+            🎯 Master Arabic with Interactive Learning Tools
           </Typography>
           <Typography
             variant="body1"
@@ -46,7 +46,7 @@ export function LandingPage() {
               mx: 'auto',
             }}
           >
-            Explore comprehensive verb conjugations, grammar patterns, and more
+            🔍 Explore comprehensive verb conjugations, grammar patterns, and more
           </Typography>
         </Box>
 
@@ -94,7 +94,7 @@ export function LandingPage() {
                       textAlign: 'center',
                     }}
                   >
-                    Arabic Verb Conjugations
+                    📖 Arabic Verb Conjugations
                   </Typography>
                   <Typography
                     variant="body1"
@@ -103,8 +103,8 @@ export function LandingPage() {
                       textAlign: 'center',
                     }}
                   >
-                    Interactive conjugation tables for Al-Sahih, Al-Mudā'af, and
-                    other verb categories. Explore patterns with examples and full
+                    🔄 Interactive conjugation tables for 💪 Al-Sahih, 👯 Al-Mudā'af, ❗ Al-Mahmūz, and
+                    🌊 Al-Mu'tall. Explore patterns with examples and full
                     conjugation breakdowns.
                   </Typography>
                 </CardContent>
@@ -155,7 +155,7 @@ export function LandingPage() {
                       textAlign: 'center',
                     }}
                   >
-                    Other Topics
+                    ✏️ Other Topics
                   </Typography>
                   <Typography
                     variant="body1"
@@ -164,9 +164,9 @@ export function LandingPage() {
                       textAlign: 'center',
                     }}
                   >
-                    Coming soon: Grammar rules, vocabulary builders, reading
+                    🔜 Coming soon: 📝 Grammar rules, 💬 vocabulary builders, 📰 reading
                     exercises, and more resources to enhance your Arabic learning
-                    journey.
+                    journey. 🚀
                   </Typography>
                 </CardContent>
               </CardActionArea>
