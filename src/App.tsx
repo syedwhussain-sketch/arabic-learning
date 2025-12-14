@@ -1,6 +1,7 @@
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Navigation } from './components/Navigation';
+import { Breadcrumbs } from './components/Breadcrumbs';
 import { LandingPage } from './pages/LandingPage';
 import { VerbsTableView } from './pages/VerbsTableView';
 import { OtherTopics } from './pages/OtherTopics';
@@ -45,6 +46,7 @@ function App() {
       <CssBaseline />
       <HashRouter>
         <Navigation />
+        <Breadcrumbs />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/verbs/table" element={<VerbsTableView />} />
