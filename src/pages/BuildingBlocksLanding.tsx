@@ -126,18 +126,38 @@ export function BuildingBlocksLanding() {
               sx={{
                 position: 'relative',
                 borderRadius: 2,
-                backgroundColor: book.isAvailable ? '#2a2a2a' : '#1a1a1a',
-                border: book.isAvailable 
-                  ? '2px solid rgba(255,255,255,0.18)' 
-                  : '2px solid rgba(255,255,255,0.08)',
+                backgroundColor: (theme) =>
+                  theme.palette.mode === 'dark'
+                    ? book.isAvailable
+                      ? '#2a2a2a'
+                      : '#1a1a1a'
+                    : book.isAvailable
+                    ? '#ffffff'
+                    : '#f5f5f5',
+                border: (theme) => {
+                  const mode = theme.palette.mode;
+                  if (mode === 'dark') {
+                    return book.isAvailable 
+                      ? '2px solid rgba(255,255,255,0.18)' 
+                      : '2px solid rgba(255,255,255,0.08)';
+                  } else {
+                    return book.isAvailable
+                      ? '2px solid rgba(0,0,0,0.15)'
+                      : '2px solid rgba(0,0,0,0.08)';
+                  }
+                },
                 opacity: book.isAvailable ? 1 : 0.6,
                 transition: 'all 0.3s ease',
                 '&:hover': book.isAvailable
                   ? {
                       transform: 'translateY(-8px)',
                       boxShadow: 8,
-                      backgroundColor: '#353535',
-                      borderColor: 'rgba(255,255,255,0.3)',
+                      backgroundColor: (theme) =>
+                        theme.palette.mode === 'dark' ? '#353535' : '#f0f0f0',
+                      borderColor: (theme) =>
+                        theme.palette.mode === 'dark' 
+                          ? 'rgba(255,255,255,0.3)' 
+                          : 'rgba(0,0,0,0.3)',
                     }
                   : {},
               }}
@@ -170,7 +190,10 @@ export function BuildingBlocksLanding() {
                         position: 'absolute',
                         top: 16,
                         right: 16,
-                        color: 'rgba(255,255,255,0.4)',
+                        color: (theme) =>
+                          theme.palette.mode === 'dark' 
+                            ? 'rgba(255,255,255,0.4)' 
+                            : 'rgba(0,0,0,0.3)',
                       }}
                     >
                       <LockIcon fontSize="small" />

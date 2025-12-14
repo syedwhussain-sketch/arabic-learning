@@ -3,6 +3,8 @@
 ## 🚨 CRITICAL: Mobile-First Responsive Design
 **THIS IS A NON-NEGOTIABLE REQUIREMENT FOR THE ENTIRE SITE**
 
+for every completed task, ask whether version shold e incremenet for this D:\development\lnd\arabic-learning\src\constants\constants.ts
+
 - **Design priority order**:
   1. **Smartphones FIRST** - 100% smartphone friendly (320px - 480px)
   2. **Tablets/iPads** - Full tablet support (481px - 1024px)

@@ -55,13 +55,22 @@ export function LandingPage() {
               sx={{
                 height: '100%',
                 borderRadius: 3,
-                backgroundColor: '#2a2a2a',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
+                backgroundColor: (theme) =>
+                  theme.palette.mode === 'dark' 
+                    ? '#2a2a2a' 
+                    : '#f5f5f5',
+                border: (theme) =>
+                  theme.palette.mode === 'dark'
+                    ? '1px solid rgba(255, 255, 255, 0.12)'
+                    : '1px solid rgba(0, 0, 0, 0.12)',
                 transition: 'transform 0.2s, box-shadow 0.2s',
                 '&:hover': {
                   transform: 'translateY(-8px)',
                   boxShadow: 8,
-                  backgroundColor: '#353535',
+                  backgroundColor: (theme) =>
+                    theme.palette.mode === 'dark'
+                      ? '#353535'
+                      : '#eeeeee',
                 },
               }}
             >
@@ -112,13 +121,22 @@ export function LandingPage() {
               sx={{
                 height: '100%',
                 borderRadius: 3,
-                backgroundColor: '#2a2a2a',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
+                backgroundColor: (theme) =>
+                  theme.palette.mode === 'dark' 
+                    ? '#2a2a2a' 
+                    : '#f5f5f5',
+                border: (theme) =>
+                  theme.palette.mode === 'dark'
+                    ? '1px solid rgba(255, 255, 255, 0.12)'
+                    : '1px solid rgba(0, 0, 0, 0.12)',
                 transition: 'transform 0.2s, box-shadow 0.2s',
                 '&:hover': {
                   transform: 'translateY(-8px)',
                   boxShadow: 8,
-                  backgroundColor: '#353535',
+                  backgroundColor: (theme) =>
+                    theme.palette.mode === 'dark'
+                      ? '#353535'
+                      : '#eeeeee',
                 },
               }}
             >
@@ -169,13 +187,22 @@ export function LandingPage() {
               sx={{
                 height: '100%',
                 borderRadius: 3,
-                backgroundColor: '#2a2a2a',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
+                backgroundColor: (theme) =>
+                  theme.palette.mode === 'dark' 
+                    ? '#2a2a2a' 
+                    : '#f5f5f5',
+                border: (theme) =>
+                  theme.palette.mode === 'dark'
+                    ? '1px solid rgba(255, 255, 255, 0.12)'
+                    : '1px solid rgba(0, 0, 0, 0.12)',
                 transition: 'transform 0.2s, box-shadow 0.2s',
                 '&:hover': {
                   transform: 'translateY(-8px)',
                   boxShadow: 8,
-                  backgroundColor: '#353535',
+                  backgroundColor: (theme) =>
+                    theme.palette.mode === 'dark'
+                      ? '#353535'
+                      : '#eeeeee',
                 },
               }}
             >
@@ -226,13 +253,22 @@ export function LandingPage() {
               sx={{
                 height: '100%',
                 borderRadius: 3,
-                backgroundColor: '#2a2a2a',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
+                backgroundColor: (theme) =>
+                  theme.palette.mode === 'dark' 
+                    ? '#2a2a2a' 
+                    : '#f5f5f5',
+                border: (theme) =>
+                  theme.palette.mode === 'dark'
+                    ? '1px solid rgba(255, 255, 255, 0.12)'
+                    : '1px solid rgba(0, 0, 0, 0.12)',
                 transition: 'transform 0.2s, box-shadow 0.2s',
                 '&:hover': {
                   transform: 'translateY(-8px)',
                   boxShadow: 8,
-                  backgroundColor: '#353535',
+                  backgroundColor: (theme) =>
+                    theme.palette.mode === 'dark'
+                      ? '#353535'
+                      : '#eeeeee',
                 },
               }}
             >
