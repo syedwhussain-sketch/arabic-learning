@@ -6,7 +6,6 @@ import {
   Card,
   CardContent,
   useTheme,
-  Chip,
 } from '@mui/material';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Cell } from 'recharts';
 import { useVocabularyStore } from '../../stores/vocabularyStore';
@@ -17,25 +16,11 @@ export function ProgressDashboard() {
   const cards = useVocabularyStore((state) => state.cards);
   const totalCards = useVocabularyStore((state) => state.totalCards);
   const practiceMode = useVocabularyStore((state) => state.practiceMode);
-  const vocabularySource = useVocabularyStore((state) => state.selectedSource);
   const onExitPractice = useVocabularyStore((state) => state.handleExitPractice);
   
   const remaining = cards.length;
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
-
-  // Get source display name with emoji
-  const getSourceDisplay = () => {
-    if (!vocabularySource) return '';
-    const sourceMap = {
-      'medinabook1': { name: 'Medina Book 1', emoji: '📗' },
-      'medinabook2': { name: 'Medina Book 2', emoji: '📘' },
-      'medinabook3': { name: 'Medina Book 3', emoji: '📙' },
-      'other': { name: 'Ten Lessons Of Arabic', emoji: '📕' },
-    };
-    const source = sourceMap[vocabularySource];
-    return `${source.emoji} ${source.name}`;
-  };
 
   // Calculate statistics
   const totalAttempts = correctCount + wrongCount;

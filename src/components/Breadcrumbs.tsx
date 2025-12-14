@@ -123,11 +123,12 @@ export function Breadcrumbs() {
             );
           }
 
+          // At this point, hasPath is true and crumb.path is defined
           return (
             <MuiLink
               key={crumb.path}
               component={Link}
-              to={crumb.path}
+              to={crumb.path!}
               id={`breadcrumb-link-${index}`}
               underline="hover"
               onClick={resetVocabularyState}
