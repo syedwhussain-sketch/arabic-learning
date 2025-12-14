@@ -253,7 +253,7 @@ export function Vocabulary() {
               {/* Statistics - Compact Layout */}
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, flex: 1 }}>
                 <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 1 }}>
-                  <Card sx={{ backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }}>
+                  <Card  sx={{ backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }}>
                     <CardContent sx={{ textAlign: 'center', p: 1, '&:last-child': { pb: 1 } }}>
                       <Typography variant="h6" sx={{ color: '#4caf50', fontWeight: 'bold', fontSize: '1.1rem' }}>
                         {correctCount}
@@ -480,6 +480,7 @@ export function Vocabulary() {
                   elevation={24}
                   sx={{
                     position: 'relative',
+                       borderRadius: 4,
                     width: '100%',
                     height: '100%',
                     transformStyle: 'preserve-3d',
