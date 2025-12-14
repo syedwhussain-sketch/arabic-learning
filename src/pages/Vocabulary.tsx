@@ -1,17 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Container,
   Typography,
   Paper,
   useTheme,
-  Chip,
   Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  IconButton,
   Modal,
   Backdrop,
 } from '@mui/material';
@@ -19,8 +17,6 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { vocabularyItems, type VocabularyItem } from '../data/vocabularyData';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-
-const PRACTICE_RESULTS_KEY = 'vocabulary-practice-results';
 
 type PracticeMode = 'arabic-to-english' | 'english-to-arabic' | null;
 
@@ -208,7 +204,7 @@ export function Vocabulary() {
               }}
             >
               {cards.map((cardState, index) => {
-                const { item, isFlipped } = cardState;
+                const { item } = cardState;
                 const isFocused = focusedCardIndex === index;
 
                 return (
@@ -272,18 +268,6 @@ export function Vocabulary() {
                             ? item.arabic
                             : item.english}
                         </Box>
-                        {practiceMode === 'english-to-arabic' && (
-                          <Typography
-                            variant="body1"
-                            sx={{
-                              color: isDark ? '#cccccc' : '#333333',
-                              fontStyle: 'italic',
-                              fontSize: '1rem',
-                            }}
-                          >
-                            {item.transliteration}
-                          </Typography>
-                        )}
                       </Box>
                     </Paper>
                   </Box>
@@ -476,15 +460,6 @@ export function Vocabulary() {
                         ? focusedCard.item.arabic
                         : focusedCard.item.english}
                     </Box>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        color: isDark ? '#cccccc' : '#333333',
-                        fontStyle: 'italic',
-                      }}
-                    >
-                      {focusedCard.item.transliteration}
-                    </Typography>
 
                     {/* Answer Buttons - Only show when flipped */}
                     {focusedCard.isFlipped && (
