@@ -1,5 +1,5 @@
-import type { VocabularyItem } from '../data/vocabularyData';
-import { vocabularyItems } from '../data/vocabulary';
+import type { VocabularyItem, VocabularyDataSource } from '../data/vocabularyData';
+import { vocabularyItems, getVocabularyBySource } from '../data/vocabulary';
 import type { PracticeSize } from '../types/vocabulary.types';
 
 // Fisher-Yates shuffle algorithm
@@ -12,19 +12,22 @@ export const shuffleArray = <T,>(array: T[]): T[] => {
   return shuffled;
 };
 
-// Get practice cards based on size selection
+// Get practice cards based on size selection and source
 export const getPracticeCards = (
   size: PracticeSize,
+  source: VocabularyDataSource | null,
   customCount?: string
 ): VocabularyItem[] => {
-  const shuffled = shuffleArray(vocabularyItems);
+  // Get vocabulary items from the selected source, or all items if no source selected
+  const sourceItems = source ? getVocabularyBySource(source) : vocabularyItems;
+  const shuffled = shuffleArray(sourceItems);
 
   switch (size) {
     case 'random50':
-      return shuffled.slice(0, Math.min(50, vocabularyItems.length));
+      return shuffled.slice(0, Math.min(50, sourceItems.length));
     case 'custom':
       const customNum = parseInt(customCount || '100') || 100;
-      return shuffled.slice(0, Math.min(customNum, vocabularyItems.length));
+      return shuffled.slice(0, Math.min(customNum, sourceItems.length));
     case 'all':
       return shuffled;
     default:

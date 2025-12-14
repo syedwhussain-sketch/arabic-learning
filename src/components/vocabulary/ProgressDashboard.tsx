@@ -6,9 +6,11 @@ import {
   Card,
   CardContent,
   useTheme,
+  Chip,
 } from '@mui/material';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Cell } from 'recharts';
 import type { PracticeMode } from '../../types/vocabulary.types';
+import type { VocabularyDataSource } from '../../data/vocabularyData';
 
 interface ProgressDashboardProps {
   correctCount: number;
@@ -16,6 +18,7 @@ interface ProgressDashboardProps {
   remaining: number;
   totalCards: number;
   practiceMode: PracticeMode;
+  vocabularySource: VocabularyDataSource | null;
   onExitPractice: () => void;
 }
 
@@ -25,10 +28,24 @@ export function ProgressDashboard({
   remaining,
   totalCards,
   practiceMode,
+  vocabularySource,
   onExitPractice,
 }: ProgressDashboardProps) {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
+
+  // Get source display name with emoji
+  const getSourceDisplay = () => {
+    if (!vocabularySource) return '';
+    const sourceMap = {
+      'medinabook1': { name: 'Medina Book 1', emoji: '📗' },
+      'medinabook2': { name: 'Medina Book 2', emoji: '📘' },
+      'medinabook3': { name: 'Medina Book 3', emoji: '📙' },
+      'other': { name: 'Ten Lessons Of Arabic', emoji: '📕' },
+    };
+    const source = sourceMap[vocabularySource];
+    return `${source.emoji} ${source.name}`;
+  };
 
   // Calculate statistics
   const totalAttempts = correctCount + wrongCount;
@@ -51,6 +68,20 @@ export function ProgressDashboard({
         borderRadius: 2,
       }}
     >
+      {vocabularySource && (
+        <Box sx={{ mb: 2, textAlign: 'center' }}>
+          <Chip
+            label={getSourceDisplay()}
+            sx={{
+              backgroundColor: isDark ? '#ffffff' : '#000000',
+              color: isDark ? '#000000' : '#ffffff',
+              fontWeight: 'bold',
+              fontSize: { xs: '0.85rem', sm: '0.95rem' },
+              px: 1.5,
+            }}
+          />
+        </Box>
+      )}
       <Box
         sx={{
           display: 'flex',

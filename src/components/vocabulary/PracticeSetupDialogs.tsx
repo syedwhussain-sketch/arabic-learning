@@ -10,14 +10,17 @@ import {
   useTheme,
   Card,
   CardContent,
+  Chip,
 } from '@mui/material';
 import type { PracticeMode, PracticeSize } from '../../types/vocabulary.types';
-import { vocabularyItems } from '../../data/vocabulary';
+import type { VocabularyDataSource } from '../../data/vocabularyData';
+import { vocabularyItems, getVocabularyCount } from '../../data/vocabulary';
 
 interface PracticeSetupDialogsProps {
   sizeDialogOpen: boolean;
   modeDialogOpen: boolean;
   customCount: string;
+  selectedSource: VocabularyDataSource | null;
   onCustomCountChange: (value: string) => void;
   onSizeSelect: (size: PracticeSize) => void;
   onModeSelect: (mode: PracticeMode) => void;
@@ -29,6 +32,7 @@ export function PracticeSetupDialogs({
   sizeDialogOpen,
   modeDialogOpen,
   customCount,
+  selectedSource,
   onCustomCountChange,
   onSizeSelect,
   onModeSelect,
@@ -37,6 +41,22 @@ export function PracticeSetupDialogs({
 }: PracticeSetupDialogsProps) {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
+
+  // Get source-specific vocabulary count
+  const sourceVocabCount = selectedSource ? getVocabularyCount(selectedSource) : vocabularyItems.length;
+
+  // Get source display name with emoji
+  const getSourceDisplay = () => {
+    if (!selectedSource) return '';
+    const sourceMap = {
+      'medinabook1': { name: 'Medina Book 1', emoji: '📗' },
+      'medinabook2': { name: 'Medina Book 2', emoji: '📘' },
+      'medinabook3': { name: 'Medina Book 3', emoji: '📙' },
+      'other': { name: 'Ten Lessons Of Arabic', emoji: '📕' },
+    };
+    const source = sourceMap[selectedSource];
+    return `${source.emoji} ${source.name}`;
+  };
 
   return (
     <>
@@ -66,6 +86,20 @@ export function PracticeSetupDialogs({
           📚 Choose Practice Set
         </DialogTitle>
         <DialogContent sx={{ pt: { xs: 1.5, sm: 2 }, pb: { xs: 1, sm: 2 } }}>
+          {selectedSource && (
+            <Box sx={{ textAlign: 'center', mb: 2 }}>
+              <Chip
+                label={getSourceDisplay()}
+                sx={{
+                  backgroundColor: isDark ? '#ffffff' : '#000000',
+                  color: isDark ? '#000000' : '#ffffff',
+                  fontWeight: 'bold',
+                  fontSize: { xs: '0.85rem', sm: '0.95rem' },
+                  px: 1,
+                }}
+              />
+            </Box>
+          )}
           <Typography
             variant="body2"
             sx={{ 
@@ -163,7 +197,7 @@ export function PracticeSetupDialogs({
                           fontWeight: 'bold',
                         },
                       }}
-                      inputProps={{ min: 1, max: vocabularyItems.length }}
+                      inputProps={{ min: 1, max: sourceVocabCount }}
                     />
                     <Button
                       variant="contained"
@@ -223,7 +257,7 @@ export function PracticeSetupDialogs({
                       Practice with All the Words
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
-                      Challenge yourself with all {vocabularyItems.length} words
+                      Challenge yourself with all {sourceVocabCount} words
                     </Typography>
                   </Box>
                 </Box>

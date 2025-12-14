@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Box, Container, useTheme } from '@mui/material';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import type { PracticeMode, PracticeSize, CardState, CompletedCard } from '../types/vocabulary.types';
+import type { VocabularyDataSource } from '../data/vocabularyData';
 import { getPracticeCards, shuffleArray } from '../utils/vocabularyPracticeUtils';
 import { ProgressDashboard } from '../components/vocabulary/ProgressDashboard';
 import { PracticeCard } from '../components/vocabulary/PracticeCard';
@@ -16,6 +17,7 @@ export function Vocabulary() {
   const [gridRef] = useAutoAnimate();
 
   // Practice setup state
+  const [selectedSource, setSelectedSource] = useState<VocabularyDataSource | null>(null);
   const [practiceSize, setPracticeSize] = useState<PracticeSize>(null);
   const [customCount, setCustomCount] = useState<string>('100');
   const [sizeDialogOpen, setSizeDialogOpen] = useState(false);
@@ -33,8 +35,8 @@ export function Vocabulary() {
 
   // Initialize cards when practice mode is selected
   useEffect(() => {
-    if (practiceMode && isPracticing && practiceSize) {
-      const practiceCards = getPracticeCards(practiceSize, customCount);
+    if (practiceMode && isPracticing && practiceSize && selectedSource) {
+      const practiceCards = getPracticeCards(practiceSize, selectedSource, customCount);
       const shuffled = practiceCards.map((item) => ({
         item,
         isFlipped: false,
@@ -46,9 +48,10 @@ export function Vocabulary() {
       setWrongCount(0);
       setCompletedCards([]);
     }
-  }, [practiceMode, isPracticing, practiceSize, customCount]);
+  }, [practiceMode, isPracticing, practiceSize, selectedSource, customCount]);
 
-  const handleStartPractice = () => {
+  const handleSourceSelect = (sourceId: VocabularyDataSource) => {
+    setSelectedSource(sourceId);
     setSizeDialogOpen(true);
   };
 
@@ -67,12 +70,14 @@ export function Vocabulary() {
   const handleCancelSizeSelection = () => {
     setSizeDialogOpen(false);
     setPracticeSize(null);
+    setSelectedSource(null);
   };
 
   const handleCancelModeSelection = () => {
     setModeDialogOpen(false);
     setPracticeMode(null);
     setPracticeSize(null);
+    setSelectedSource(null);
   };
 
   const handleCardClick = (index: number) => {
@@ -125,6 +130,7 @@ export function Vocabulary() {
     setIsPracticing(false);
     setPracticeMode(null);
     setPracticeSize(null);
+    setSelectedSource(null);
     setCards([]);
     setCorrectCount(0);
     setWrongCount(0);
@@ -145,11 +151,12 @@ export function Vocabulary() {
   if (!isPracticing) {
     return (
       <>
-        <LandingScreen onStartPractice={handleStartPractice} />
+        <LandingScreen onSourceSelect={handleSourceSelect} />
         <PracticeSetupDialogs
           sizeDialogOpen={sizeDialogOpen}
           modeDialogOpen={modeDialogOpen}
           customCount={customCount}
+          selectedSource={selectedSource}
           onCustomCountChange={setCustomCount}
           onSizeSelect={handleSizeSelect}
           onModeSelect={handleModeSelect}
@@ -177,6 +184,7 @@ export function Vocabulary() {
           remaining={remaining}
           totalCards={totalCards}
           practiceMode={practiceMode}
+          vocabularySource={selectedSource}
           onExitPractice={handleExitPractice}
         />
 
