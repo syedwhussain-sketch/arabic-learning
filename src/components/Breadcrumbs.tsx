@@ -1,14 +1,13 @@
-import { Breadcrumbs as MuiBreadcrumbs, Typography, Link as MuiLink, Box } from '@mui/material';
+import { Breadcrumbs as MuiBreadcrumbs, Typography, Link as MuiLink } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import { useThemeStore } from '../stores/themeStore';
 import { useVocabularyStore } from '../stores/vocabularyStore';
-import HomeIcon from '@mui/icons-material/Home';
 import type { VocabularyDataSource } from '../data/vocabularyData';
 
 interface BreadcrumbRoute {
   path?: string; // Optional now, for dynamic non-route breadcrumbs
   label: string;
-  icon?: React.ReactNode;
+  emoji?: string;
 }
 
 // Map vocabulary source IDs to display names
@@ -21,32 +20,32 @@ const vocabularySourceLabels: Record<VocabularyDataSource, string> = {
 
 // Define route mappings for breadcrumbs
 const routeMap: Record<string, BreadcrumbRoute[]> = {
-  '/': [{ path: '/', label: 'Home', icon: <HomeIcon sx={{ fontSize: 16 }} /> }],
+  '/': [{ path: '/', label: 'Home', emoji: '🏠' }],
   '/verbs/table': [
-    { path: '/', label: 'Home', icon: <HomeIcon sx={{ fontSize: 16 }} /> },
-    { path: '/verbs/table', label: 'Verb Categories' },
+    { path: '/', label: 'Home', emoji: '🏠' },
+    { path: '/verbs/table', label: 'Verb Categories', emoji: '📚' },
   ],
   '/building-blocks': [
-    { path: '/', label: 'Home', icon: <HomeIcon sx={{ fontSize: 16 }} /> },
-    { path: '/building-blocks', label: 'Building Blocks' },
+    { path: '/', label: 'Home', emoji: '🏠' },
+    { path: '/building-blocks', label: 'Building Blocks', emoji: '🧱' },
   ],
   '/building-blocks/medina-book-2': [
-    { path: '/', label: 'Home', icon: <HomeIcon sx={{ fontSize: 16 }} /> },
-    { path: '/building-blocks', label: 'Building Blocks' },
-    { path: '/building-blocks/medina-book-2', label: 'Medina Book 2' },
+    { path: '/', label: 'Home', emoji: '🏠' },
+    { path: '/building-blocks', label: 'Building Blocks', emoji: '🧱' },
+    { path: '/building-blocks/medina-book-2', label: 'Medina Book 2', emoji: '📖' },
   ],
   '/practice': [
-    { path: '/', label: 'Home', icon: <HomeIcon sx={{ fontSize: 16 }} /> },
-    { path: '/practice', label: 'Practice' },
+    { path: '/', label: 'Home', emoji: '🏠' },
+    { path: '/practice', label: 'Practice', emoji: '📝' },
   ],
   '/practice/vocabulary': [
-    { path: '/', label: 'Home', icon: <HomeIcon sx={{ fontSize: 16 }} /> },
-    { path: '/practice', label: 'Practice' },
-    { path: '/practice/vocabulary', label: 'Vocabulary Practice' },
+    { path: '/', label: 'Home', emoji: '🏠' },
+    { path: '/practice', label: 'Practice', emoji: '📝' },
+    { path: '/practice/vocabulary', label: 'Vocabulary Practice', emoji: '📚' },
   ],
   '/other-topics': [
-    { path: '/', label: 'Home', icon: <HomeIcon sx={{ fontSize: 16 }} /> },
-    { path: '/other-topics', label: 'Other Topics' },
+    { path: '/', label: 'Home', emoji: '🏠' },
+    { path: '/other-topics', label: 'Other Topics', emoji: '📋' },
   ],
 };
 
@@ -62,7 +61,7 @@ export function Breadcrumbs() {
 
   // Get breadcrumb items for current path
   let breadcrumbs = routeMap[location.pathname] || [
-    { path: '/', label: 'Home', icon: <HomeIcon sx={{ fontSize: 16 }} /> },
+    { path: '/', label: 'Home', emoji: '🏠' },
   ];
 
   // Add dynamic breadcrumbs based on context
@@ -70,85 +69,72 @@ export function Breadcrumbs() {
     // Add the vocabulary source as a dynamic breadcrumb (no path = not clickable)
     breadcrumbs = [
       ...breadcrumbs,
-      { label: vocabularySourceLabels[selectedSource] },
+      { label: vocabularySourceLabels[selectedSource], emoji: '📖' },
     ];
   }
 
-  // Don't show breadcrumbs on home page
-  if (location.pathname === '/') {
-    return null;
-  }
-
   return (
-    <Box
+    <MuiBreadcrumbs
+      aria-label="breadcrumb"
       id="breadcrumbs-container"
       sx={{
-        backgroundColor: isDark ? '#121212' : '#f5f5f5',
-        borderBottom: `1px solid ${isDark ? '#333' : '#e0e0e0'}`,
-        px: { xs: 2, sm: 3 },
-        py: 1,
+        fontSize: { xs: '0.8rem', sm: '0.875rem' },
+        '& .MuiBreadcrumbs-separator': {
+          color: isDark ? '#666' : '#999',
+          mx: { xs: 0.5, sm: 1 },
+        },
       }}
     >
-      <MuiBreadcrumbs
-        aria-label="breadcrumb"
-        sx={{
-          fontSize: { xs: '0.75rem', sm: '0.875rem' },
-          '& .MuiBreadcrumbs-separator': {
-            color: isDark ? '#666' : '#999',
-          },
-        }}
-      >
-        {breadcrumbs.map((crumb, index) => {
-          const isLast = index === breadcrumbs.length - 1;
-          const hasPath = crumb.path !== undefined;
+      {breadcrumbs.map((crumb, index) => {
+        const isLast = index === breadcrumbs.length - 1;
+        const hasPath = crumb.path !== undefined;
 
-          if (isLast || !hasPath) {
-            // Last item or dynamic non-route item (no path)
-            return (
-              <Typography
-                key={crumb.path || `dynamic-${index}`}
-                id={`breadcrumb-current-${index}`}
-                sx={{
-                  color: isDark ? '#fff' : '#000',
-                  fontWeight: 600,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 0.5,
-                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                }}
-              >
-                {crumb.icon}
-                {crumb.label}
-              </Typography>
-            );
-          }
-
-          // At this point, hasPath is true and crumb.path is defined
+        if (isLast || !hasPath) {
+          // Last item or dynamic non-route item (no path)
           return (
-            <MuiLink
-              key={crumb.path}
-              component={Link}
-              to={crumb.path!}
-              id={`breadcrumb-link-${index}`}
-              underline="hover"
-              onClick={resetVocabularyState}
+            <Typography
+              key={crumb.path || `dynamic-${index}`}
+              id={`breadcrumb-current-${index}`}
               sx={{
-                color: isDark ? '#90caf9' : '#1976d2',
+                color: isDark ? '#fff' : '#000',
+                fontWeight: 600,
                 display: 'flex',
                 alignItems: 'center',
                 gap: 0.5,
-                fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                '&:hover': {
-                  color: isDark ? '#64b5f6' : '#1565c0',
-                },
+                fontSize: { xs: '0.8rem', sm: '0.875rem' },
               }}
             >
-              {crumb.icon}
+              {crumb.emoji && <span>{crumb.emoji}</span>}
               {crumb.label}
-            </MuiLink>
+            </Typography>
           );
-        })}
-      </MuiBreadcrumbs>
-    </Box>
+        }
+
+        // At this point, hasPath is true and crumb.path is defined
+        return (
+          <MuiLink
+            key={crumb.path}
+            component={Link}
+            to={crumb.path!}
+            id={`breadcrumb-link-${index}`}
+            underline="hover"
+            onClick={resetVocabularyState}
+            sx={{
+              color: isDark ? '#90caf9' : '#1976d2',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 0.5,
+              fontSize: { xs: '0.8rem', sm: '0.875rem' },
+              '&:hover': {
+                color: isDark ? '#64b5f6' : '#1565c0',
+              },
+            }}
+          >
+            {crumb.emoji && <span>{crumb.emoji}</span>}
+            {crumb.label}
+          </MuiLink>
+        );
+      })}
+    </MuiBreadcrumbs>
   );
 }
