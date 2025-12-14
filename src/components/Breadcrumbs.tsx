@@ -58,6 +58,7 @@ export function Breadcrumbs() {
   // Get vocabulary store state
   const selectedSource = useVocabularyStore((state) => state.selectedSource);
   const isPracticing = useVocabularyStore((state) => state.isPracticing);
+  const resetVocabularyState = useVocabularyStore((state) => state.resetState);
 
   // Get breadcrumb items for current path
   let breadcrumbs = routeMap[location.pathname] || [
@@ -129,6 +130,7 @@ export function Breadcrumbs() {
               to={crumb.path}
               id={`breadcrumb-link-${index}`}
               underline="hover"
+              onClick={resetVocabularyState}
               sx={{
                 color: isDark ? '#90caf9' : '#1976d2',
                 display: 'flex',
