@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Box, Container, useTheme } from '@mui/material';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import type { PracticeMode, PracticeSize, CardState } from '../types/vocabulary.types';
+import type { PracticeMode, PracticeSize, CardState, CompletedCard } from '../types/vocabulary.types';
 import { getPracticeCards, shuffleArray } from '../utils/vocabularyPracticeUtils';
 import { ProgressDashboard } from '../components/vocabulary/ProgressDashboard';
 import { PracticeCard } from '../components/vocabulary/PracticeCard';
@@ -29,6 +29,7 @@ export function Vocabulary() {
   const [wrongCount, setWrongCount] = useState(0);
   const [focusedCardIndex, setFocusedCardIndex] = useState<number | null>(null);
   const [totalCards, setTotalCards] = useState(0);
+  const [completedCards, setCompletedCards] = useState<CompletedCard[]>([]);
 
   // Initialize cards when practice mode is selected
   useEffect(() => {
@@ -37,11 +38,13 @@ export function Vocabulary() {
       const shuffled = practiceCards.map((item) => ({
         item,
         isFlipped: false,
+        wrongCount: 0,
       }));
       setCards(shuffled);
       setTotalCards(shuffled.length);
       setCorrectCount(0);
       setWrongCount(0);
+      setCompletedCards([]);
     }
   }, [practiceMode, isPracticing, practiceSize, customCount]);
 
@@ -87,19 +90,27 @@ export function Vocabulary() {
   const handleAnswer = (correct: boolean) => {
     if (focusedCardIndex === null) return;
 
+    const currentCard = cards[focusedCardIndex];
     setFocusedCardIndex(null);
 
     setTimeout(() => {
       if (correct) {
+        // Add to completed cards before removing from grid
+        setCompletedCards(prev => [...prev, {
+          item: currentCard.item,
+          wrongCount: currentCard.wrongCount,
+        }]);
+        
         // Remove the card from the grid
         const newCards = cards.filter((_, i) => i !== focusedCardIndex);
         setCards(newCards);
         setCorrectCount(correctCount + 1);
       } else {
-        // Unflip the card and shuffle
+        // Increment wrongCount for this specific card and unflip it
         const newCards = cards.map((card, i) => ({
           ...card,
           isFlipped: i === focusedCardIndex ? false : card.isFlipped,
+          wrongCount: i === focusedCardIndex ? card.wrongCount + 1 : card.wrongCount,
         }));
 
         // Shuffle the cards
@@ -119,6 +130,7 @@ export function Vocabulary() {
     setWrongCount(0);
     setFocusedCardIndex(null);
     setTotalCards(0);
+    setCompletedCards([]);
   };
 
   const focusedCard = focusedCardIndex !== null ? cards[focusedCardIndex] : null;
@@ -196,6 +208,7 @@ export function Vocabulary() {
             correctCount={correctCount}
             totalCards={totalCards}
             percentageCorrect={percentageCorrect}
+            completedCards={completedCards}
             onExitPractice={handleExitPractice}
           />
         )}
