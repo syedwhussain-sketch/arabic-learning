@@ -33,6 +33,7 @@ interface VocabularyState {
   handleModeSelect: (mode: PracticeMode) => void;
   handleCancelSizeSelection: () => void;
   handleCancelModeSelection: () => void;
+  setPracticeMode: (mode: PracticeMode) => void;
   
   handleCardClick: (index: number) => void;
   handleAnswer: (correct: boolean) => void;
@@ -49,7 +50,7 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
   customCount: '100',
   sizeDialogOpen: false,
   modeDialogOpen: false,
-  practiceMode: null,
+  practiceMode: 'arabic-to-english',
   isPracticing: false,
   cards: [],
   correctCount: 0,
@@ -77,8 +78,10 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
     set({
       practiceSize: size,
       sizeDialogOpen: false,
-      modeDialogOpen: true,
+      isPracticing: true,
     });
+    // Initialize practice after setting size
+    setTimeout(() => get().initializePractice(), 0);
   },
 
   handleModeSelect: (mode) => {
@@ -102,11 +105,13 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
   handleCancelModeSelection: () => {
     set({
       modeDialogOpen: false,
-      practiceMode: null,
+      practiceMode: 'arabic-to-english',
       practiceSize: null,
       selectedSource: null,
     });
   },
+
+  setPracticeMode: (mode) => set({ practiceMode: mode }),
 
   handleCardClick: (index) => {
     const { focusedCardIndex, cards } = get();
@@ -187,7 +192,7 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
       customCount: '100',
       sizeDialogOpen: false,
       modeDialogOpen: false,
-      practiceMode: null,
+      practiceMode: 'arabic-to-english',
       isPracticing: false,
       cards: [],
       correctCount: 0,
