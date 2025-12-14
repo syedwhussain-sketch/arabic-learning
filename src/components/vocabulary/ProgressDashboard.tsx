@@ -9,28 +9,18 @@ import {
   Chip,
 } from '@mui/material';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Cell } from 'recharts';
-import type { PracticeMode } from '../../types/vocabulary.types';
-import type { VocabularyDataSource } from '../../data/vocabularyData';
+import { useVocabularyStore } from '../../stores/vocabularyStore';
 
-interface ProgressDashboardProps {
-  correctCount: number;
-  wrongCount: number;
-  remaining: number;
-  totalCards: number;
-  practiceMode: PracticeMode;
-  vocabularySource: VocabularyDataSource | null;
-  onExitPractice: () => void;
-}
-
-export function ProgressDashboard({
-  correctCount,
-  wrongCount,
-  remaining,
-  totalCards,
-  practiceMode,
-  vocabularySource,
-  onExitPractice,
-}: ProgressDashboardProps) {
+export function ProgressDashboard() {
+  const correctCount = useVocabularyStore((state) => state.correctCount);
+  const wrongCount = useVocabularyStore((state) => state.wrongCount);
+  const cards = useVocabularyStore((state) => state.cards);
+  const totalCards = useVocabularyStore((state) => state.totalCards);
+  const practiceMode = useVocabularyStore((state) => state.practiceMode);
+  const vocabularySource = useVocabularyStore((state) => state.selectedSource);
+  const onExitPractice = useVocabularyStore((state) => state.handleExitPractice);
+  
+  const remaining = cards.length;
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 

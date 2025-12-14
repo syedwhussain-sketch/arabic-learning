@@ -1,14 +1,11 @@
 import { Box, Container, Typography, useTheme } from '@mui/material';
 import { getVocabularyCount } from '../../data/vocabulary';
 import type { VocabularySource } from '../../types/vocabulary.types';
-import type { VocabularyDataSource } from '../../data/vocabularyData';
 import { VocabularySourceCard } from './VocabularySourceCard';
+import { useVocabularyStore } from '../../stores/vocabularyStore';
 
-interface LandingScreenProps {
-  onSourceSelect: (sourceId: VocabularyDataSource) => void;
-}
-
-export function LandingScreen({ onSourceSelect }: LandingScreenProps) {
+export function LandingScreen() {
+  const onSourceSelect = useVocabularyStore((state) => state.handleSourceSelect);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 

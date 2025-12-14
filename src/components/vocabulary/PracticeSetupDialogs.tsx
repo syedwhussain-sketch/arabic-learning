@@ -12,33 +12,19 @@ import {
   CardContent,
   Chip,
 } from '@mui/material';
-import type { PracticeMode, PracticeSize } from '../../types/vocabulary.types';
-import type { VocabularyDataSource } from '../../data/vocabularyData';
 import { vocabularyItems, getVocabularyCount } from '../../data/vocabulary';
+import { useVocabularyStore } from '../../stores/vocabularyStore';
 
-interface PracticeSetupDialogsProps {
-  sizeDialogOpen: boolean;
-  modeDialogOpen: boolean;
-  customCount: string;
-  selectedSource: VocabularyDataSource | null;
-  onCustomCountChange: (value: string) => void;
-  onSizeSelect: (size: PracticeSize) => void;
-  onModeSelect: (mode: PracticeMode) => void;
-  onCancelSizeSelection: () => void;
-  onCancelModeSelection: () => void;
-}
-
-export function PracticeSetupDialogs({
-  sizeDialogOpen,
-  modeDialogOpen,
-  customCount,
-  selectedSource,
-  onCustomCountChange,
-  onSizeSelect,
-  onModeSelect,
-  onCancelSizeSelection,
-  onCancelModeSelection,
-}: PracticeSetupDialogsProps) {
+export function PracticeSetupDialogs() {
+  const sizeDialogOpen = useVocabularyStore((state) => state.sizeDialogOpen);
+  const modeDialogOpen = useVocabularyStore((state) => state.modeDialogOpen);
+  const customCount = useVocabularyStore((state) => state.customCount);
+  const selectedSource = useVocabularyStore((state) => state.selectedSource);
+  const setCustomCount = useVocabularyStore((state) => state.setCustomCount);
+  const handleSizeSelect = useVocabularyStore((state) => state.handleSizeSelect);
+  const handleModeSelect = useVocabularyStore((state) => state.handleModeSelect);
+  const handleCancelSizeSelection = useVocabularyStore((state) => state.handleCancelSizeSelection);
+  const handleCancelModeSelection = useVocabularyStore((state) => state.handleCancelModeSelection);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
@@ -63,7 +49,7 @@ export function PracticeSetupDialogs({
       {/* Practice Size Selection Dialog */}
       <Dialog
         open={sizeDialogOpen}
-        onClose={onCancelSizeSelection}
+        onClose={handleCancelSizeSelection}
         maxWidth="sm"
         fullWidth
         PaperProps={{
@@ -115,7 +101,7 @@ export function PracticeSetupDialogs({
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.5, sm: 2 } }}>
             {/* Random 50 Words Card */}
             <Card
-              onClick={() => onSizeSelect('random50')}
+              onClick={() => handleSizeSelect('random50')}
               sx={{
                 borderRadius: 3,
                 cursor: 'pointer',
@@ -184,7 +170,7 @@ export function PracticeSetupDialogs({
                     <TextField
                       type="number"
                       value={customCount}
-                      onChange={(e) => onCustomCountChange(e.target.value)}
+                      onChange={(e) => setCustomCount(e.target.value)}
                       placeholder="10"
                       variant="outlined"
                       size="small"
@@ -202,7 +188,7 @@ export function PracticeSetupDialogs({
                     <Button
                       variant="contained"
                       size="medium"
-                      onClick={() => onSizeSelect('custom')}
+                      onClick={() => handleSizeSelect('custom')}
                       sx={{
                         py: { xs: 1, sm: 1.25 },
                         px: { xs: 2.5, sm: 3 },
@@ -226,7 +212,7 @@ export function PracticeSetupDialogs({
 
             {/* Practice All Words Card */}
             <Card
-              onClick={() => onSizeSelect('all')}
+              onClick={() => handleSizeSelect('all')}
               sx={{
                 borderRadius: 3,
                 cursor: 'pointer',
@@ -270,7 +256,7 @@ export function PracticeSetupDialogs({
             variant="outlined"
             fullWidth
             size="medium"
-            onClick={onCancelSizeSelection}
+            onClick={handleCancelSizeSelection}
             sx={{
               py: { xs: 1, sm: 1.25 },
               borderRadius: 2,
@@ -294,7 +280,7 @@ export function PracticeSetupDialogs({
       {/* Practice Mode Selection Dialog */}
       <Dialog
         open={modeDialogOpen}
-        onClose={onCancelModeSelection}
+        onClose={handleCancelModeSelection}
         maxWidth="sm"
         fullWidth
         PaperProps={{
@@ -332,7 +318,7 @@ export function PracticeSetupDialogs({
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.5, sm: 2 } }}>
             {/* Arabic to English Card */}
             <Card
-              onClick={() => onModeSelect('arabic-to-english')}
+              onClick={() => handleModeSelect('arabic-to-english')}
               sx={{
                 borderRadius: 3,
                 cursor: 'pointer',
@@ -373,7 +359,7 @@ export function PracticeSetupDialogs({
 
             {/* English to Arabic Card */}
             <Card
-              onClick={() => onModeSelect('english-to-arabic')}
+              onClick={() => handleModeSelect('english-to-arabic')}
               sx={{
                 borderRadius: 3,
                 cursor: 'pointer',
@@ -418,7 +404,7 @@ export function PracticeSetupDialogs({
             variant="outlined"
             fullWidth
             size="medium"
-            onClick={onCancelModeSelection}
+            onClick={handleCancelModeSelection}
             sx={{
               py: { xs: 1, sm: 1.25 },
               borderRadius: 2,

@@ -1,17 +1,15 @@
 import { Dialog, DialogTitle, DialogContent, IconButton, Box, useTheme, Typography, Chip } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import type { BuildingBlock } from '../data/buildingBlocks';
 import { renderStyledArabicText } from '../utils/arabicTextUtils';
+import { useBuildingBlocksStore } from '../stores/buildingBlocksStore';
 
-interface BuildingBlockModalProps {
-  open: boolean;
-  onClose: () => void;
-  block: BuildingBlock | null;
-}
-
-export function BuildingBlockModal({ open, onClose, block }: BuildingBlockModalProps) {
+export function BuildingBlockModal() {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
+  
+  const open = useBuildingBlocksStore((state) => state.modalOpen);
+  const block = useBuildingBlocksStore((state) => state.selectedBlock);
+  const onClose = useBuildingBlocksStore((state) => state.handleCloseModal);
 
   if (!block) return null;
 

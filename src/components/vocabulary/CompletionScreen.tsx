@@ -2,13 +2,13 @@ import { Box, Button, Typography, useTheme, Paper, Divider } from '@mui/material
 import { useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import type { CompletedCard } from '../../types/vocabulary.types';
+import { useVocabularyStore } from '../../stores/vocabularyStore';
 
 interface CompletionScreenProps {
   correctCount: number;
   totalCards: number;
   percentageCorrect: number;
   completedCards: CompletedCard[];
-  onExitPractice: () => void;
 }
 
 export function CompletionScreen({
@@ -16,8 +16,8 @@ export function CompletionScreen({
   totalCards,
   percentageCorrect,
   completedCards,
-  onExitPractice,
 }: CompletionScreenProps) {
+  const onExitPractice = useVocabularyStore((state) => state.handleExitPractice);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 

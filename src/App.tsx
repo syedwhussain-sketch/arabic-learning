@@ -8,24 +8,8 @@ import { BuildingBlocksLanding } from './pages/BuildingBlocksLanding';
 import { MedinaBook2 } from './pages/MedinaBook2';
 import { Practice } from './pages/Practice';
 import { Vocabulary } from './pages/Vocabulary';
-import { useMemo, useState, useEffect } from 'react';
-
-function useThemeMode() {
-  const [mode, setMode] = useState<'light' | 'dark'>(() => {
-    try {
-      const saved = window.localStorage.getItem('theme-mode');
-      return saved === 'light' ? 'light' : 'dark';
-    } catch {
-      return 'dark';
-    }
-  });
-  useEffect(() => {
-    try {
-      window.localStorage.setItem('theme-mode', mode);
-    } catch {}
-  }, [mode]);
-  return { mode, setMode } as const;
-}
+import { useMemo } from 'react';
+import { useThemeStore } from './stores/themeStore';
 
 function makeTheme(mode: 'light' | 'dark') {
   return createTheme({
@@ -53,18 +37,14 @@ function makeTheme(mode: 'light' | 'dark') {
 }
 
 function App() {
-  const { mode, setMode } = useThemeMode();
+  const mode = useThemeStore((state) => state.mode);
   const theme = useMemo(() => makeTheme(mode), [mode]);
-
-  const toggleTheme = () => {
-    setMode(mode === 'light' ? 'dark' : 'light');
-  };
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <HashRouter>
-        <Navigation mode={mode} onToggleTheme={toggleTheme} />
+        <Navigation />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/verbs/table" element={<VerbsTableView />} />

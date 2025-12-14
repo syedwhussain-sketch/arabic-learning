@@ -1,9 +1,10 @@
 import { Box, Card, CardContent, Typography, Chip, useTheme } from '@mui/material';
 import type { VocabularySource } from '../../types/vocabulary.types';
+import type { VocabularyDataSource } from '../../data/vocabularyData';
 
 interface VocabularySourceCardProps {
   source: VocabularySource;
-  onClick: (sourceId: string) => void;
+  onClick: (sourceId: VocabularyDataSource) => void;
 }
 
 export function VocabularySourceCard({ source, onClick }: VocabularySourceCardProps) {

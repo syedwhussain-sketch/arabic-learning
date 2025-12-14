@@ -1,62 +1,22 @@
-import { useState, useEffect } from 'react';
 import { Box, Container, Typography, Paper, useTheme, Chip, IconButton } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { floors, getBlockById, type BuildingBlock } from '../data/buildingBlocks';
 import { BuildingBlockModal } from '../components/BuildingBlockModal';
-
-const STORAGE_KEY = 'building-blocks-done';
+import { useBuildingBlocksStore } from '../stores/buildingBlocksStore';
 
 export function MedinaBook2() {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
-  const [selectedBlock, setSelectedBlock] = useState<BuildingBlock | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [doneBlocks, setDoneBlocks] = useState<Set<string>>(new Set());
+  
+  // Get state and actions from store
+  const doneBlocks = useBuildingBlocksStore((state) => state.doneBlocks);
+  const handleBlockClick = useBuildingBlocksStore((state) => state.handleBlockClick);
+  const toggleDone = useBuildingBlocksStore((state) => state.toggleDone);
 
-  // Load done blocks from localStorage on mount
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        setDoneBlocks(new Set(JSON.parse(saved)));
-      }
-    } catch (error) {
-      console.error('Failed to load done blocks:', error);
-    }
-  }, []);
-
-  // Save done blocks to localStorage whenever it changes
-  const saveDoneBlocks = (blocks: Set<string>) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(blocks)));
-    } catch (error) {
-      console.error('Failed to save done blocks:', error);
-    }
-  };
-
-  const handleBlockClick = (blockId: string) => {
-    const block = getBlockById(blockId);
-    if (block) {
-      setSelectedBlock(block);
-      setModalOpen(true);
-    }
-  };
-
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
-
-  const toggleDone = (blockId: string, event: React.MouseEvent) => {
+  const handleToggleDone = (blockId: string, event: React.MouseEvent) => {
     event.stopPropagation(); // Prevent opening modal when clicking done button
-    const newDoneBlocks = new Set(doneBlocks);
-    if (newDoneBlocks.has(blockId)) {
-      newDoneBlocks.delete(blockId);
-    } else {
-      newDoneBlocks.add(blockId);
-    }
-    setDoneBlocks(newDoneBlocks);
-    saveDoneBlocks(newDoneBlocks);
+    toggleDone(blockId);
   };
 
   const isDone = (blockId: string) => doneBlocks.has(blockId);
@@ -166,7 +126,7 @@ export function MedinaBook2() {
                     }}
                   >
                     <IconButton
-                      onClick={(e) => toggleDone(block.id, e)}
+                      onClick={(e) => handleToggleDone(block.id, e)}
                       sx={{
                         position: 'absolute',
                         top: 8,
@@ -262,11 +222,7 @@ export function MedinaBook2() {
         </Box>
       </Container>
 
-      <BuildingBlockModal
-        open={modalOpen}
-        onClose={handleCloseModal}
-        block={selectedBlock}
-      />
+      <BuildingBlockModal />
     </Box>
   );
 }

@@ -2,14 +2,21 @@ import { AppBar, Toolbar, IconButton, Box, Button } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import { useThemeStore } from '../stores/themeStore';
+import { useVocabularyStore } from '../stores/vocabularyStore';
 
-interface NavigationProps {
-  mode: 'light' | 'dark';
-  onToggleTheme: () => void;
-}
-
-export function Navigation({ mode, onToggleTheme }: NavigationProps) {
+export function Navigation() {
   const location = useLocation();
+  const mode = useThemeStore((state) => state.mode);
+  const toggleTheme = useThemeStore((state) => state.toggleTheme);
+  const resetVocabularyState = useVocabularyStore((state) => state.resetState);
+
+  const handleNavClick = () => {
+    // Reset vocabulary store when navigating away from vocabulary practice
+    if (location.pathname === '/practice/vocabulary') {
+      resetVocabularyState();
+    }
+  };
 
   return (
     <AppBar
@@ -24,6 +31,7 @@ export function Navigation({ mode, onToggleTheme }: NavigationProps) {
         <Button
           component={Link}
           to="/"
+          onClick={handleNavClick}
           sx={{
             mr: 2,
             color: 'inherit',
@@ -36,6 +44,7 @@ export function Navigation({ mode, onToggleTheme }: NavigationProps) {
           <Button
             component={Link}
             to="/verbs/table"
+            onClick={handleNavClick}
             variant={location.pathname === '/verbs/table' ? 'contained' : 'text'}
             size="small"
             sx={{
@@ -57,6 +66,7 @@ export function Navigation({ mode, onToggleTheme }: NavigationProps) {
           <Button
             component={Link}
             to="/building-blocks"
+            onClick={handleNavClick}
             variant={location.pathname === '/building-blocks' ? 'contained' : 'text'}
             size="small"
             sx={{
@@ -78,6 +88,7 @@ export function Navigation({ mode, onToggleTheme }: NavigationProps) {
           <Button
             component={Link}
             to="/practice"
+            onClick={handleNavClick}
             variant={location.pathname.startsWith('/practice') ? 'contained' : 'text'}
             size="small"
             sx={{
@@ -102,7 +113,7 @@ export function Navigation({ mode, onToggleTheme }: NavigationProps) {
 
         <IconButton
           aria-label="toggle theme"
-          onClick={onToggleTheme}
+          onClick={toggleTheme}
           color="inherit"
         >
           {mode === 'light' ? <DarkModeIcon /> : <LightModeIcon />}
