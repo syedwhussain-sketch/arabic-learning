@@ -6,9 +6,9 @@
 
 import type { VocabularyItem, VocabularyDataSource } from '../vocabularyData';
 import { medinaBook1Vocabulary } from './medinabook1.data';
+import { medinaBook2Vocabulary } from './medinabook2.data';
 
 // Future imports (when data is added):
-// import { medinaBook2Vocabulary } from './medinabook2.data';
 // import { medinaBook3Vocabulary } from './medinabook3.data';
 
 /**
@@ -16,7 +16,7 @@ import { medinaBook1Vocabulary } from './medinabook1.data';
  */
 const allVocabularyItems: VocabularyItem[] = [
   ...medinaBook1Vocabulary,
-  // ...medinaBook2Vocabulary,  // Uncomment when available
+  ...medinaBook2Vocabulary,
   // ...medinaBook3Vocabulary,  // Uncomment when available
 ];
 
