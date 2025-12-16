@@ -5,7 +5,7 @@ import { floors, getBlockById, type BuildingBlock } from '../data/buildingBlocks
 import { BuildingBlockModal } from '../components/BuildingBlockModal';
 import { useBuildingBlocksStore } from '../stores/buildingBlocksStore';
 
-export function MedinaBook2() {
+export function BuildingBlocksViewer() {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
   

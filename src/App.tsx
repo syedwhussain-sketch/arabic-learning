@@ -5,7 +5,7 @@ import { LandingPage } from './pages/LandingPage';
 import { VerbsTableView } from './pages/VerbsTableView';
 import { OtherTopics } from './pages/OtherTopics';
 import { BuildingBlocksLanding } from './pages/BuildingBlocksLanding';
-import { MedinaBook2 } from './pages/MedinaBook2';
+import { BuildingBlocksViewer } from './pages/BuildingBlocksViewer';
 import { Practice } from './pages/Practice';
 import { Vocabulary } from './pages/Vocabulary';
 import { useMemo } from 'react';
@@ -50,7 +50,7 @@ function App() {
           <Route path="/verbs/table" element={<VerbsTableView />} />
           <Route path="/other-topics" element={<OtherTopics />} />
           <Route path="/building-blocks" element={<BuildingBlocksLanding />} />
-          <Route path="/building-blocks/medina-book-2" element={<MedinaBook2 />} />
+          <Route path="/building-blocks/medina-book-2" element={<BuildingBlocksViewer />} />
           <Route path="/practice" element={<Practice />} />
           <Route path="/practice/vocabulary" element={<Vocabulary />} />
           <Route path="*" element={<Navigate to="/" replace />} />
