@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import type { CompletedCard } from '../../types/vocabulary.types';
 import { useVocabularyStore } from '../../stores/vocabularyStore';
+import { MAX_WRONG_ATTEMPTS } from '../../constants/constants';
 
 interface CompletionScreenProps {
   correctCount: number;
@@ -69,6 +70,17 @@ export function CompletionScreen({
     .slice(0, 5); // Show top 5 weakest cards
 
   const worstCard = sortedWeakCards[0];
+
+  // Calculate comprehensive statistics
+  const cardsWithErrors = completedCards.filter(card => card.wrongCount > 0);
+  const perfectCards = completedCards.filter(card => card.wrongCount === 0);
+  const reviewCards = completedCards.filter(card => card.completedInReview);
+  const multipleReviewCycles = completedCards.filter(card => card.reviewCycleCount > 1);
+  const totalAttemptsMade = completedCards.reduce((sum, card) => sum + card.totalAttempts, 0);
+  const averageAttemptsPerCard = totalCards > 0 ? (totalAttemptsMade / totalCards).toFixed(1) : '0';
+  
+  // Sort cards with errors for detailed view (hide perfect cards)
+  const cardsToShow = cardsWithErrors.sort((a, b) => b.wrongCount - a.wrongCount);
 
   // Humorous messages for top 5 worst cards
   const humorousMessages = [
@@ -149,8 +161,72 @@ export function CompletionScreen({
         accuracy)
       </Typography>
 
+      {/* Statistics Overview */}
+      <Box sx={{ maxWidth: '800px', mx: 'auto', mb: 4 }}>
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: 'bold',
+            color: 'text.primary',
+            mb: 3,
+          }}
+        >
+          📊 Session Statistics
+        </Typography>
+        
+        <Paper
+          elevation={3}
+          sx={{
+            p: 3,
+            backgroundColor: isDark ? '#1a1a1a' : '#f5f5f5',
+            borderRadius: 3,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' },
+              gap: 3,
+            }}
+          >
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'success.main' }}>
+                {perfectCards.length}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                Perfect (First Try)
+              </Typography>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'warning.main' }}>
+                {cardsWithErrors.length}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                Needed Practice
+              </Typography>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'error.main' }}>
+                {multipleReviewCycles.length}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                Multiple Review Cycles
+              </Typography>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+                {averageAttemptsPerCard}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                Avg. Attempts/Card
+              </Typography>
+            </Box>
+          </Box>
+        </Paper>
+      </Box>
+
       {/* Weakest Cards Section */}
-      {sortedWeakCards.length > 0 && (
+      {cardsWithErrors.length > 0 && (
         <Box sx={{ maxWidth: '800px', mx: 'auto', mb: 4 }}>
           <Typography
             variant="h5"
@@ -160,7 +236,7 @@ export function CompletionScreen({
               mb: 3,
             }}
           >
-            📊 Your Weakest Cards
+            📊 Your Top 5 Challenges
           </Typography>
           
           <Paper
@@ -245,6 +321,165 @@ export function CompletionScreen({
               </Box>
             ))}
           </Paper>
+        </Box>
+      )}
+
+      {/* Detailed Card Statistics Table */}
+      {cardsWithErrors.length > 0 && (
+        <Box sx={{ maxWidth: '900px', mx: 'auto', mb: 4 }}>
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: 'bold',
+              color: 'text.primary',
+              mb: 3,
+            }}
+          >
+            📝 Cards That Needed Practice
+          </Typography>
+          
+          <Paper
+            elevation={3}
+            sx={{
+              p: 3,
+              backgroundColor: isDark ? '#1a1a1a' : '#f5f5f5',
+              borderRadius: 3,
+              maxHeight: '400px',
+              overflow: 'auto',
+            }}
+          >
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              {/* Header */}
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: { xs: '2fr 1fr 1fr', sm: '2.5fr 1fr 1fr 1fr 1fr' },
+                  gap: 2,
+                  pb: 2,
+                  borderBottom: `2px solid ${isDark ? '#333' : '#ddd'}`,
+                  fontWeight: 'bold',
+                }}
+              >
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  Word
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary', textAlign: 'center' }}>
+                  Errors
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary', textAlign: 'center' }}>
+                  Total
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ color: 'text.secondary', textAlign: 'center', display: { xs: 'none', sm: 'block' } }}
+                >
+                  Cycles
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ color: 'text.secondary', textAlign: 'center', display: { xs: 'none', sm: 'block' } }}
+                >
+                  Status
+                </Typography>
+              </Box>
+              
+              {/* Card Rows */}
+              {cardsToShow.map((card, index) => (
+                <Box
+                  key={card.item.id}
+                  sx={{
+                    display: 'grid',
+                    gridTemplateColumns: { xs: '2fr 1fr 1fr', sm: '2.5fr 1fr 1fr 1fr 1fr' },
+                    gap: 2,
+                    py: 1.5,
+                    px: 1,
+                    borderBottom: index < cardsToShow.length - 1 ? `1px solid ${isDark ? '#2a2a2a' : '#eee'}` : 'none',
+                    backgroundColor: card.wrongCount >= 5
+                      ? (isDark ? 'rgba(211, 47, 47, 0.15)' : 'rgba(211, 47, 47, 0.08)')
+                      : card.wrongCount >= 3
+                      ? (isDark ? 'rgba(255, 152, 0, 0.1)' : 'rgba(255, 152, 0, 0.05)')
+                      : 'transparent',
+                    borderRadius: 1,
+                    '&:hover': {
+                      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
+                    },
+                  }}
+                >
+                  <Box>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        fontFamily: 'Amiri, Traditional Arabic, serif',
+                        direction: 'rtl',
+                        fontWeight: 500,
+                        color: 'text.primary',
+                      }}
+                    >
+                      {card.item.arabic}
+                    </Typography>
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                      {card.item.english}
+                    </Typography>
+                  </Box>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                      color: card.wrongCount >= 5 ? 'error.main' : card.wrongCount >= 3 ? 'warning.main' : 'info.main',
+                    }}
+                  >
+                    {card.wrongCount}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{ textAlign: 'center', color: 'text.primary', fontWeight: 500 }}
+                  >
+                    {card.totalAttempts}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{ 
+                      textAlign: 'center', 
+                      display: { xs: 'none', sm: 'block' },
+                      fontWeight: 'bold',
+                      color: card.reviewCycleCount > 0 ? 'error.main' : 'text.secondary',
+                    }}
+                  >
+                    {card.reviewCycleCount}
+                  </Typography>
+                  <Box
+                    sx={{
+                      textAlign: 'center',
+                      display: { xs: 'none', sm: 'flex' },
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {card.reviewCycleCount > 1 ? (
+                      <Typography variant="caption" sx={{ color: 'error.main', fontWeight: 'bold' }}>
+                        ↻ Multi-Review
+                      </Typography>
+                    ) : card.completedInReview ? (
+                      <Typography variant="caption" sx={{ color: 'warning.main', fontWeight: 'bold' }}>
+                        ↻ Review
+                      </Typography>
+                    ) : (
+                      <Typography variant="caption" sx={{ color: 'info.main', fontWeight: 'bold' }}>
+                        ⚠ Practice
+                      </Typography>
+                    )}
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </Paper>
+          
+          <Box sx={{ mt: 2, textAlign: 'center' }}>
+            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+              💡 Tip: "Cycles" shows how many times a card was removed after {MAX_WRONG_ATTEMPTS} errors and reshown
+            </Typography>
+          </Box>
         </Box>
       )}
 

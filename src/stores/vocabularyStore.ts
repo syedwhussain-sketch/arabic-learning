@@ -83,7 +83,15 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
     set({
       practiceSize: size,
       sizeDialogOpen: false,
-      isPracticing: true,
+      // Don't set isPracticing yet - initializePractice will do it
+      // Clear old session state immediately to prevent showing completion screen
+      cards: [],
+      correctCount: 0,
+      wrongCount: 0,
+      completedCards: [],
+      removedCards: [],
+      isReviewMode: false,
+      focusedCardIndex: null,
     });
     // Initialize practice after setting size
     setTimeout(() => get().initializePractice(), 0);
@@ -93,7 +101,15 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
     set({
       practiceMode: mode,
       modeDialogOpen: false,
-      isPracticing: true,
+      // Don't set isPracticing yet - initializePractice will do it
+      // Clear old session state immediately to prevent showing completion screen
+      cards: [],
+      correctCount: 0,
+      wrongCount: 0,
+      completedCards: [],
+      removedCards: [],
+      isReviewMode: false,
+      focusedCardIndex: null,
     });
     // Initialize practice after setting mode
     setTimeout(() => get().initializePractice(), 0);
@@ -142,11 +158,15 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
     setTimeout(() => {
       if (correct) {
         // Add to completed cards before removing from grid
+        const { isReviewMode } = get();
         const newCompletedCards = [
           ...completedCards,
           {
             item: currentCard.item,
             wrongCount: currentCard.wrongCount,
+            totalAttempts: currentCard.wrongCount + 1, // +1 for the correct attempt
+            completedInReview: isReviewMode,
+            reviewCycleCount: currentCard.reviewCycleCount,
           },
         ];
 
@@ -155,11 +175,12 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
         
         // Check if we need to start review mode
         if (newCards.length === 0 && removedCards.length > 0) {
-          // Start review mode with removed cards
+          // Start review mode with removed cards (keeping their cumulative wrongCount)
           const reviewCards = [...removedCards].map(card => ({
             ...card,
             isFlipped: false,
-            wrongCount: 0, // Reset wrong count for review session
+            // Keep wrongCount as is (cumulative)
+            // Increment reviewCycleCount since we're showing it again
           }));
           set({
             completedCards: newCompletedCards,
@@ -180,17 +201,23 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
         
         if (newWrongCount >= MAX_WRONG_ATTEMPTS) {
           // Remove card from active practice and add to removedCards
-          const updatedCard = { ...currentCard, wrongCount: newWrongCount, isFlipped: false };
+          // Increment reviewCycleCount since we're removing it
+          const updatedCard = { 
+            ...currentCard, 
+            wrongCount: newWrongCount, 
+            isFlipped: false,
+            reviewCycleCount: currentCard.reviewCycleCount + 1,
+          };
           const newCards = cards.filter((_, i) => i !== focusedCardIndex);
           const newRemovedCards = [...removedCards, updatedCard];
           
           // Check if we need to start review mode immediately
           if (newCards.length === 0 && newRemovedCards.length > 0) {
-            // Start review mode with removed cards
+            // Start review mode with removed cards (keeping cumulative wrongCount)
             const reviewCards = newRemovedCards.map(card => ({
               ...card,
               isFlipped: false,
-              wrongCount: 0, // Reset wrong count for review session
+              // Keep wrongCount as is (cumulative)
             }));
             set({
               cards: reviewCards,
@@ -225,11 +252,17 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
   },
 
   handleExitPractice: () => {
+    // Complete reset to initial state - as if page was just loaded
     set({
-      isPracticing: false,
-      practiceMode: null,
-      practiceSize: null,
+      // Practice setup state
       selectedSource: null,
+      practiceSize: null,
+      customCount: '100',
+      sizeDialogOpen: false,
+      modeDialogOpen: false,
+      // Practice state
+      practiceMode: 'arabic-to-english',
+      isPracticing: false,
       cards: [],
       correctCount: 0,
       wrongCount: 0,
@@ -262,13 +295,14 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
   },
 
   initializePractice: () => {
-    const { practiceMode, isPracticing, practiceSize, selectedSource, customCount } = get();
-    if (practiceMode && isPracticing && practiceSize && selectedSource) {
+    const { practiceMode, practiceSize, selectedSource, customCount } = get();
+    if (practiceMode && practiceSize && selectedSource) {
       const practiceCards = getPracticeCards(practiceSize, selectedSource, customCount);
       const shuffled = practiceCards.map((item) => ({
         item,
         isFlipped: false,
         wrongCount: 0,
+        reviewCycleCount: 0,
       }));
       set({
         cards: shuffled,
@@ -278,6 +312,7 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
         completedCards: [],
         removedCards: [],
         isReviewMode: false,
+        isPracticing: true, // Set isPracticing here after cards are loaded
       });
     }
   },
