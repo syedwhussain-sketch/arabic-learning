@@ -84,7 +84,6 @@ export function Vocabulary() {
           <CompletionScreen
             correctCount={correctCount}
             totalCards={totalCards}
-            percentageCorrect={percentageCorrect}
             completedCards={completedCards}
           />
         )}

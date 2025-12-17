@@ -8,23 +8,45 @@ import { MAX_WRONG_ATTEMPTS } from '../../constants/constants';
 interface CompletionScreenProps {
   correctCount: number;
   totalCards: number;
-  percentageCorrect: number;
   completedCards: CompletedCard[];
 }
 
 export function CompletionScreen({
   correctCount,
   totalCards,
-  percentageCorrect,
   completedCards,
 }: CompletionScreenProps) {
   const onExitPractice = useVocabularyStore((state) => state.handleExitPractice);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
+  // Calculate comprehensive statistics FIRST (before useEffect)
+  const cardsWithErrors = completedCards.filter(card => card.wrongCount > 0);
+  const perfectCards = completedCards.filter(card => card.wrongCount === 0);
+  const reviewCards = completedCards.filter(card => card.completedInReview);
+  const multipleReviewCycles = completedCards.filter(card => card.reviewCycleCount > 1);
+  const totalAttemptsMade = completedCards.reduce((sum, card) => sum + card.totalAttempts, 0);
+  const averageAttemptsPerCard = totalCards > 0 ? (totalAttemptsMade / totalCards).toFixed(1) : '0';
+  
+  // Calculate score based on unique cards (not cumulative attempts)
+  const perfectCardsCount = perfectCards.length;
+  const cardsWithErrorsCount = cardsWithErrors.length;
+  const scorePercentage = totalCards > 0 ? Math.round((perfectCardsCount / totalCards) * 100) : 0;
+  
   // Check if user got perfect or near-perfect score
-  const isPerfect = percentageCorrect === 100;
-  const isExcellent = percentageCorrect >= 90;
+  const isPerfect = scorePercentage === 100;
+  const isExcellent = scorePercentage >= 90;
+
+  // Sort cards by wrongCount in descending order (weakest first)
+  const sortedWeakCards = [...completedCards]
+    .filter(card => card.wrongCount > 0)
+    .sort((a, b) => b.wrongCount - a.wrongCount)
+    .slice(0, 5);
+
+  const worstCard = sortedWeakCards[0];
+  
+  // Sort cards with errors for detailed view (hide perfect cards)
+  const cardsToShow = cardsWithErrors.sort((a, b) => b.wrongCount - a.wrongCount);
 
   // Fire confetti when component mounts if score is excellent
   useEffect(() => {
@@ -62,25 +84,6 @@ export function CompletionScreen({
       return () => clearInterval(interval);
     }
   }, [isExcellent]);
-
-  // Sort cards by wrongCount in descending order (weakest first)
-  const sortedWeakCards = [...completedCards]
-    .filter(card => card.wrongCount > 0)
-    .sort((a, b) => b.wrongCount - a.wrongCount)
-    .slice(0, 5); // Show top 5 weakest cards
-
-  const worstCard = sortedWeakCards[0];
-
-  // Calculate comprehensive statistics
-  const cardsWithErrors = completedCards.filter(card => card.wrongCount > 0);
-  const perfectCards = completedCards.filter(card => card.wrongCount === 0);
-  const reviewCards = completedCards.filter(card => card.completedInReview);
-  const multipleReviewCycles = completedCards.filter(card => card.reviewCycleCount > 1);
-  const totalAttemptsMade = completedCards.reduce((sum, card) => sum + card.totalAttempts, 0);
-  const averageAttemptsPerCard = totalCards > 0 ? (totalAttemptsMade / totalCards).toFixed(1) : '0';
-  
-  // Sort cards with errors for detailed view (hide perfect cards)
-  const cardsToShow = cardsWithErrors.sort((a, b) => b.wrongCount - a.wrongCount);
 
   // Humorous messages for top 5 worst cards
   const humorousMessages = [
@@ -157,8 +160,17 @@ export function CompletionScreen({
           mb: 4,
         }}
       >
-        Final Score: {correctCount} correct out of {totalCards} ({percentageCorrect}%
+        Final Score: {perfectCardsCount} perfect out of {totalCards} cards ({scorePercentage}%
         accuracy)
+      </Typography>
+      <Typography
+        variant="body1"
+        sx={{
+          color: 'text.secondary',
+          mb: 2,
+        }}
+      >
+        {perfectCardsCount} card{perfectCardsCount !== 1 ? 's' : ''} mastered on first try · {cardsWithErrorsCount} card{cardsWithErrorsCount !== 1 ? 's' : ''} needed practice
       </Typography>
 
       {/* Statistics Overview */}
