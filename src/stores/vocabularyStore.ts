@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type { PracticeMode, PracticeSize, CardState, CompletedCard } from '../types/vocabulary.types';
 import type { VocabularyDataSource } from '../data/vocabularyData';
 import { getPracticeCards, shuffleArray } from '../utils/vocabularyPracticeUtils';
+import { MAX_WRONG_ATTEMPTS } from '../constants/constants';
 
 interface VocabularyState {
   // Practice setup state
@@ -20,6 +21,8 @@ interface VocabularyState {
   focusedCardIndex: number | null;
   totalCards: number;
   completedCards: CompletedCard[];
+  removedCards: CardState[]; // Cards removed after MAX_WRONG_ATTEMPTS
+  isReviewMode: boolean; // Flag to indicate if we're reviewing removed cards
 
   // Actions
   setSelectedSource: (source: VocabularyDataSource | null) => void;
@@ -58,6 +61,8 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
   focusedCardIndex: null,
   totalCards: 0,
   completedCards: [],
+  removedCards: [],
+  isReviewMode: false,
 
   // Simple setters
   setSelectedSource: (source) => set({ selectedSource: source }),
@@ -128,7 +133,7 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
   },
 
   handleAnswer: (correct) => {
-    const { focusedCardIndex, cards, correctCount, wrongCount, completedCards } = get();
+    const { focusedCardIndex, cards, correctCount, wrongCount, completedCards, removedCards } = get();
     if (focusedCardIndex === null) return;
 
     const currentCard = cards[focusedCardIndex];
@@ -147,25 +152,74 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
 
         // Remove the card from the grid
         const newCards = cards.filter((_, i) => i !== focusedCardIndex);
-        set({
-          completedCards: newCompletedCards,
-          cards: newCards,
-          correctCount: correctCount + 1,
-        });
+        
+        // Check if we need to start review mode
+        if (newCards.length === 0 && removedCards.length > 0) {
+          // Start review mode with removed cards
+          const reviewCards = [...removedCards].map(card => ({
+            ...card,
+            isFlipped: false,
+            wrongCount: 0, // Reset wrong count for review session
+          }));
+          set({
+            completedCards: newCompletedCards,
+            cards: reviewCards,
+            correctCount: correctCount + 1,
+            removedCards: [],
+            isReviewMode: true,
+          });
+        } else {
+          set({
+            completedCards: newCompletedCards,
+            cards: newCards,
+            correctCount: correctCount + 1,
+          });
+        }
       } else {
-        // Increment wrongCount for this specific card and unflip it
-        const newCards = cards.map((card, i) => ({
-          ...card,
-          isFlipped: i === focusedCardIndex ? false : card.isFlipped,
-          wrongCount: i === focusedCardIndex ? card.wrongCount + 1 : card.wrongCount,
-        }));
+        const newWrongCount = currentCard.wrongCount + 1;
+        
+        if (newWrongCount >= MAX_WRONG_ATTEMPTS) {
+          // Remove card from active practice and add to removedCards
+          const updatedCard = { ...currentCard, wrongCount: newWrongCount, isFlipped: false };
+          const newCards = cards.filter((_, i) => i !== focusedCardIndex);
+          const newRemovedCards = [...removedCards, updatedCard];
+          
+          // Check if we need to start review mode immediately
+          if (newCards.length === 0 && newRemovedCards.length > 0) {
+            // Start review mode with removed cards
+            const reviewCards = newRemovedCards.map(card => ({
+              ...card,
+              isFlipped: false,
+              wrongCount: 0, // Reset wrong count for review session
+            }));
+            set({
+              cards: reviewCards,
+              wrongCount: wrongCount + 1,
+              removedCards: [],
+              isReviewMode: true,
+            });
+          } else {
+            set({
+              cards: newCards,
+              wrongCount: wrongCount + 1,
+              removedCards: newRemovedCards,
+            });
+          }
+        } else {
+          // Increment wrongCount for this specific card and unflip it
+          const newCards = cards.map((card, i) => ({
+            ...card,
+            isFlipped: i === focusedCardIndex ? false : card.isFlipped,
+            wrongCount: i === focusedCardIndex ? newWrongCount : card.wrongCount,
+          }));
 
-        // Shuffle the cards
-        const shuffled = shuffleArray(newCards);
-        set({
-          cards: shuffled,
-          wrongCount: wrongCount + 1,
-        });
+          // Shuffle the cards
+          const shuffled = shuffleArray(newCards);
+          set({
+            cards: shuffled,
+            wrongCount: wrongCount + 1,
+          });
+        }
       }
     }, 200);
   },
@@ -182,6 +236,8 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
       focusedCardIndex: null,
       totalCards: 0,
       completedCards: [],
+      removedCards: [],
+      isReviewMode: false,
     });
   },
 
@@ -200,6 +256,8 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
       focusedCardIndex: null,
       totalCards: 0,
       completedCards: [],
+      removedCards: [],
+      isReviewMode: false,
     });
   },
 
@@ -218,6 +276,8 @@ export const useVocabularyStore = create<VocabularyState>((set, get) => ({
         correctCount: 0,
         wrongCount: 0,
         completedCards: [],
+        removedCards: [],
+        isReviewMode: false,
       });
     }
   },
