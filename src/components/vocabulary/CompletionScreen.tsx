@@ -6,13 +6,11 @@ import { useVocabularyStore } from '../../stores/vocabularyStore';
 import { MAX_WRONG_ATTEMPTS } from '../../constants/constants';
 
 interface CompletionScreenProps {
-  correctCount: number;
   totalCards: number;
   completedCards: CompletedCard[];
 }
 
 export function CompletionScreen({
-  correctCount,
   totalCards,
   completedCards,
 }: CompletionScreenProps) {
@@ -23,7 +21,6 @@ export function CompletionScreen({
   // Calculate comprehensive statistics FIRST (before useEffect)
   const cardsWithErrors = completedCards.filter(card => card.wrongCount > 0);
   const perfectCards = completedCards.filter(card => card.wrongCount === 0);
-  const reviewCards = completedCards.filter(card => card.completedInReview);
   const multipleReviewCycles = completedCards.filter(card => card.reviewCycleCount > 1);
   const totalAttemptsMade = completedCards.reduce((sum, card) => sum + card.totalAttempts, 0);
   const averageAttemptsPerCard = totalCards > 0 ? (totalAttemptsMade / totalCards).toFixed(1) : '0';

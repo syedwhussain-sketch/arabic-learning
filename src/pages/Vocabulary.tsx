@@ -16,8 +16,6 @@ export function Vocabulary() {
   // Get state from store
   const isPracticing = useVocabularyStore((state) => state.isPracticing);
   const cards = useVocabularyStore((state) => state.cards);
-  const correctCount = useVocabularyStore((state) => state.correctCount);
-  const wrongCount = useVocabularyStore((state) => state.wrongCount);
   const totalCards = useVocabularyStore((state) => state.totalCards);
   const completedCards = useVocabularyStore((state) => state.completedCards);
   const focusedCardIndex = useVocabularyStore((state) => state.focusedCardIndex);
@@ -28,11 +26,6 @@ export function Vocabulary() {
   const handleAnswer = useVocabularyStore((state) => state.handleAnswer);
 
   const focusedCard = focusedCardIndex !== null ? cards[focusedCardIndex] : null;
-
-  // Calculate statistics
-  const totalAttempts = correctCount + wrongCount;
-  const percentageCorrect =
-    totalAttempts > 0 ? Math.round((correctCount / totalAttempts) * 100) : 0;
 
   // If not practicing, show landing page
   if (!isPracticing) {
@@ -82,7 +75,6 @@ export function Vocabulary() {
           </Box>
         ) : (
           <CompletionScreen
-            correctCount={correctCount}
             totalCards={totalCards}
             completedCards={completedCards}
           />
