@@ -9,11 +9,10 @@ export default defineConfig({
     environment: 'node',
     css: true,
     include: ['**/__tests__/**/*.test.{ts,tsx}'],
+    exclude: ['**/node_modules/**', '**/dist/**'],
     testTimeout: 10000,
     watch: false,
     setupFiles: ['./src/tests/setup.ts'],
-    pool: 'forks',
-    isolate: false,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
