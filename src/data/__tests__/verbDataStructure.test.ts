@@ -175,8 +175,6 @@ describe('Verb Data Structure Validation', () => {
           }
           
           // All conjugations should contain some common Arabic letters from the root
-          const firstPast = subCategory.conjugations[0].past;
-          
           // This is a soft check - just verify all pasts are non-empty and Arabic
           subCategory.conjugations.forEach(conj => {
             expect(conj.past.length).toBeGreaterThan(0);

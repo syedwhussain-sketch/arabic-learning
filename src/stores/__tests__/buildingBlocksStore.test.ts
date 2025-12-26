@@ -116,7 +116,6 @@ describe('buildingBlocksStore', () => {
         handleBlockClick('non-existent');
       });
       
-      const { selectedBlock, modalOpen } = useBuildingBlocksStore.getState();
       // Should not crash, but state depends on implementation
       expect(true).toBe(true); // Test passes if no error thrown
     });

@@ -1,6 +1,5 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { shuffleArray, getVocabColor } from '../vocabularyPracticeUtils';
-import type { VocabularyItem } from '../../data/vocabularyData';
 
 describe('vocabularyPracticeUtils', () => {
   describe('shuffleArray', () => {
