@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   test: {
     globals: true,
-    environment: 'node',
+    environment: 'jsdom',
     environmentOptions: {
       jsdom: {
         url: 'http://localhost',
@@ -17,6 +17,7 @@ export default defineConfig({
     testTimeout: 10000,
     watch: false,
     setupFiles: ['./src/tests/setup.ts'],
+    pool: 'forks',
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

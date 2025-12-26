@@ -1,4 +1,4 @@
-export const APP_VERSION = '1.0.19';
+export const APP_VERSION = '1.0.21';
 
 // Vocabulary Practice Settings
 export const MAX_WRONG_ATTEMPTS = 2; // Number of incorrect attempts before card is removed from current practice session
