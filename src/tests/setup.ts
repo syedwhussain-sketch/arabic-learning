@@ -1,7 +1,25 @@
 import { afterEach, vi, beforeAll } from 'vitest';
 
-// Setup runs once before all tests
+// Suppress console warnings during tests
+const originalWarn = console.warn;
+const originalError = console.error;
+
 beforeAll(() => {
+  // Suppress zustand persist middleware warnings
+  console.warn = (...args: any[]) => {
+    if (typeof args[0] === 'string' && args[0].includes('zustand persist middleware')) {
+      return;
+    }
+    originalWarn(...args);
+  };
+  
+  console.error = (...args: any[]) => {
+    if (typeof args[0] === 'string' && args[0].includes('zustand persist middleware')) {
+      return;
+    }
+    originalError(...args);
+  };
+
   // Mock localStorage for all environments with proper return values
   const storage = new Map<string, string>();
   const localStorageMock = {
