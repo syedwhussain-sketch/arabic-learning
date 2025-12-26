@@ -7,10 +7,16 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
+    environmentOptions: {
+      jsdom: {
+        url: 'http://localhost',
+      },
+    },
     css: true,
     include: ['**/__tests__/**/*.test.{ts,tsx}'],
     testTimeout: 10000,
     watch: false,
+    setupFiles: ['./src/tests/setup.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
